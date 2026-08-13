@@ -1,0 +1,1572 @@
+{
+  "users": [
+    {
+      "id": "msj05achi8z4",
+      "name": "مدیر سیستم",
+      "email": "admin@school.ir",
+      "role": "admin",
+      "active": true,
+      "createdAt": "2026-08-07T13:50:19.554Z",
+      "password": "37acb2397b865c962fdd0dc3541834034decefc768bb216864416ab392ca15f3"
+    },
+    {
+      "id": "msj09w1x8cqs",
+      "name": "قلثقل",
+      "email": "123",
+      "role": "student",
+      "classIds": [],
+      "active": true,
+      "createdAt": "2026-08-07T13:53:54.310Z",
+      "password": "5d623eceac7b83ffe51d8676f0a81d4658367230d37c15fafc7bcf72679b2b40"
+    },
+    {
+      "id": "msj0a9nfnc3a",
+      "name": "نئتدنتدام",
+      "email": "456",
+      "role": "teacher",
+      "classIds": [
+        "msj0ahswjo6b",
+        "msj0co9swcls"
+      ],
+      "active": true,
+      "createdAt": "2026-08-07T13:54:11.931Z",
+      "password": "3683ba88a1757eb3ae54aef5cd2fa0f50ca656a03bf7c57d8f4305c27b1716a3"
+    },
+    {
+      "id": "msj0ay6i5bix",
+      "name": "ذبلذلب",
+      "email": "asd",
+      "role": "student",
+      "classIds": [
+        "msj0ahswjo6b"
+      ],
+      "active": true,
+      "createdAt": "2026-08-07T13:54:43.722Z",
+      "password": "567934d21c904376bf13888aade656738a08e85ef13037cb27e49e42146e1a9b"
+    },
+    {
+      "id": "msj0bcpxoc7z",
+      "name": "ljkljoilj",
+      "email": "qwe",
+      "role": "student",
+      "classIds": [],
+      "active": true,
+      "createdAt": "2026-08-07T13:55:02.565Z",
+      "password": "bb0d64b73ef25cc5031b479d6854216d2ad49cd215260e3bdce69f6f1b76de36"
+    },
+    {
+      "id": "msj0cbxnq1n2",
+      "name": "dgdfgd",
+      "email": "1384",
+      "role": "teacher",
+      "classIds": [
+        "msj0ahswjo6b",
+        "msj0co9swcls"
+      ],
+      "active": true,
+      "createdAt": "2026-08-07T13:55:48.203Z",
+      "password": "4838ed084d1d287f80c52bfd51eca8fc2cbda981d44c28cbe8bb1a7c7a4393e8"
+    }
+  ],
+  "classes": [
+    {
+      "id": "msj0ahswjo6b",
+      "name": "ذفاذقفذفق",
+      "subject": "قذفققذ",
+      "teacherId": "msj0a9nfnc3a",
+      "teacherName": "نئتدنتدام",
+      "studentIds": [
+        "msj09w1x8cqs",
+        "msj0ay6i5bix",
+        "msj0bcpxoc7z"
+      ],
+      "createdAt": "2026-08-07T13:54:22.496Z"
+    },
+    {
+      "id": "msj0co9swcls",
+      "name": "چت دوستانه",
+      "subject": "",
+      "teacherId": "msj0cbxnq1n2",
+      "teacherName": "dgdfgd",
+      "studentIds": [
+        "msj09w1x8cqs",
+        "msj0ay6i5bix",
+        "msj0bcpxoc7z"
+      ],
+      "createdAt": "2026-08-07T13:56:04.192Z"
+    }
+  ],
+  "lessons": [],
+  "assignments": [
+    {
+      "id": "msj41trksl4f",
+      "classId": "msj0ahswjo6b",
+      "title": "ij",
+      "description": "kjmnkiu",
+      "dueDate": "",
+      "teacherId": "msj0a9nfnc3a",
+      "createdAt": "2026-08-07T15:39:36.560Z"
+    }
+  ],
+  "submissions": [
+    {
+      "id": "msj42j44lqs9",
+      "assignmentId": "msj41trksl4f",
+      "studentId": "msj09w1x8cqs",
+      "studentName": "قلثقل",
+      "text": "من باریدم من گاهیدک",
+      "files": [],
+      "grade": -20,
+      "feedback": "کثافت",
+      "submittedAt": "2026-08-07T15:40:09.412Z"
+    }
+  ],
+  "quizzes": [],
+  "quizSubmissions": [],
+  "attendance": [],
+  "polls": [],
+  "pollVotes": [],
+  "chatRooms": [
+    {
+      "id": "room_msj0ahswjo6b",
+      "classId": "msj0ahswjo6b",
+      "name": "گروه ذفاذقفذفق",
+      "type": "class",
+      "members": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs",
+        "msj0ay6i5bix",
+        "msj0bcpxoc7z"
+      ],
+      "createdAt": "2026-08-07T13:54:22.496Z"
+    },
+    {
+      "id": "room_msj0co9swcls",
+      "classId": "msj0co9swcls",
+      "name": "گروه dgdfgd",
+      "type": "class",
+      "members": [
+        "msj0cbxnq1n2",
+        "msj09w1x8cqs",
+        "msj0ay6i5bix",
+        "msj0bcpxoc7z"
+      ],
+      "createdAt": "2026-08-07T13:56:04.192Z"
+    },
+    {
+      "id": "msnce5cjm04c",
+      "type": "private",
+      "name": "چت با قلثقل",
+      "members": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-10T14:44:13.075Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msj0f2ofvjrv",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "/uploads/msj0f2f114wh.webm",
+      "voiceDuration": 7,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-07T13:57:56.175Z"
+    },
+    {
+      "id": "msk3o5assy3l",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بفابقاب",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:16:44.500Z"
+    },
+    {
+      "id": "msk3o9sk2ybs",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بابلابلا",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:16:50.324Z"
+    },
+    {
+      "id": "msk3oc0b0s1w",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بلابلابل",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:16:53.195Z"
+    },
+    {
+      "id": "msk3oe4yt6k3",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بابلابابلا",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:16:55.954Z"
+    },
+    {
+      "id": "msk3ofvjp071",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بلابلابلابلا",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:16:58.207Z"
+    },
+    {
+      "id": "msk3oiemfxyv",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بالبابابلا",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:17:01.486Z"
+    },
+    {
+      "id": "msk3okqpqmz2",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بابابلابل",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:17:04.513Z"
+    },
+    {
+      "id": "msk3p07arhwg",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0co9swcls",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:17:24.551Z"
+    },
+    {
+      "id": "msk3u0uf37k3",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "گاو",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-08T08:21:18.663Z"
+    },
+    {
+      "id": "msk3ua8v0l4n",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "خودتی",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:21:30.847Z"
+    },
+    {
+      "id": "msk3zz0waej0",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "من میخوام برم روبلاکس",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:25:56.240Z"
+    },
+    {
+      "id": "msk4005ddk9p",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:25:57.697Z"
+    },
+    {
+      "id": "msk408ixodc3",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "حوصله این کارهارو ندارم",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:26:08.553Z"
+    },
+    {
+      "id": "msk409nz5gi0",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "/uploads/msk409c1iyja.webm",
+      "voiceDuration": 3,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:26:10.031Z"
+    },
+    {
+      "id": "msk40qnsgyeg",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "بی ادب",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:26:32.056Z"
+    },
+    {
+      "id": "msk40z6ok9lo",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "از دستت ناراحت شدم",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:26:43.104Z"
+    },
+    {
+      "id": "msk414sgpn7s",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "میرم به کارهای مهمم برسم",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:26:50.368Z"
+    },
+    {
+      "id": "msk415nug0cr",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "کیر خر",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:26:51.498Z"
+    },
+    {
+      "id": "msk41htaa277",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "/uploads/msk41h5y30jv.webm",
+      "voiceDuration": 7,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:27:07.246Z"
+    },
+    {
+      "id": "msk41kygei8s",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "😡🤬🤬🤬",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:27:11.320Z"
+    },
+    {
+      "id": "msk44l4070lf",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "/uploads/msk44ku5ct8n.jpg",
+      "fileName": "photo_2024-07-14_21-17-56.jpg",
+      "fileType": "image",
+      "fileSize": 114879,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:29:31.488Z"
+    },
+    {
+      "id": "msk44li0g28v",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "تو باید از این عکس عبرت بگیری",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:29:31.992Z"
+    },
+    {
+      "id": "msk49qqtkbpy",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "خری",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": {
+        "id": "msk41kygei8s",
+        "text": "😡🤬🤬🤬",
+        "senderName": "قلثقل"
+      },
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:33:32.069Z"
+    },
+    {
+      "id": "msk4abpehjp1",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "/uploads/msk4abesbb93.jpg",
+      "fileName": "photo_2024-07-14_21-17-53.jpg",
+      "fileType": "image",
+      "fileSize": 256646,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:33:59.234Z"
+    },
+    {
+      "id": "msk4aceqcetg",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "/uploads/msk4ac7t127x.jpg",
+      "fileName": "photo_2024-07-14_21-17-54 (2).jpg",
+      "fileType": "image",
+      "fileSize": 155884,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:34:00.146Z"
+    },
+    {
+      "id": "msk4aeomyw38",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "/uploads/msk4aegca30k.jpg",
+      "fileName": "photo_2024-07-14_21-17-54.jpg",
+      "fileType": "image",
+      "fileSize": 157294,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:34:03.094Z"
+    },
+    {
+      "id": "msk4ahguu0d5",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "/uploads/msk4ah6g86lr.jpg",
+      "fileName": "photo_2024-07-14_21-17-55.jpg",
+      "fileType": "image",
+      "fileSize": 159131,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:34:06.702Z"
+    },
+    {
+      "id": "msk4ajzjyrv7",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "/uploads/msk4ajrplt9b.jpg",
+      "fileName": "photo_2024-07-14_21-17-56 (2).jpg",
+      "fileType": "image",
+      "fileSize": 255970,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:34:09.967Z"
+    },
+    {
+      "id": "msk4alb3m6rj",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "room_msj0ahswjo6b",
+      "text": "",
+      "fileUrl": "/uploads/msk4al0z23np.jpg",
+      "fileName": "photo_2024-07-14_21-17-56.jpg",
+      "fileType": "image",
+      "fileSize": 114879,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-08T08:34:11.679Z"
+    },
+    {
+      "id": "msncedrabghg",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "msnce5cjm04c",
+      "text": "sghl",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-10T14:44:23.974Z"
+    },
+    {
+      "id": "msnceh7fv7fb",
+      "senderId": "msj0a9nfnc3a",
+      "senderName": "نئتدنتدام",
+      "senderRole": "teacher",
+      "roomId": "msnce5cjm04c",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj0a9nfnc3a",
+        "msj09w1x8cqs"
+      ],
+      "createdAt": "2026-08-10T14:44:28.443Z"
+    },
+    {
+      "id": "msne4h1v8pik",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "msnce5cjm04c",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-10T15:32:40.915Z"
+    },
+    {
+      "id": "msne4h7x6p7h",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "msnce5cjm04c",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-10T15:32:41.133Z"
+    },
+    {
+      "id": "msne4h85tvrb",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "msnce5cjm04c",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-10T15:32:41.141Z"
+    },
+    {
+      "id": "msne4hav7cex",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "msnce5cjm04c",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-10T15:32:41.239Z"
+    },
+    {
+      "id": "msne4hbrifix",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "msnce5cjm04c",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-10T15:32:41.271Z"
+    },
+    {
+      "id": "msne4hbxs0a1",
+      "senderId": "msj09w1x8cqs",
+      "senderName": "قلثقل",
+      "senderRole": "student",
+      "roomId": "msnce5cjm04c",
+      "text": "سلام",
+      "fileUrl": "",
+      "fileName": "",
+      "fileType": "",
+      "fileSize": 0,
+      "voiceUrl": "",
+      "voiceDuration": 0,
+      "replyTo": null,
+      "edited": false,
+      "deleted": false,
+      "readBy": [
+        "msj09w1x8cqs",
+        "msj0a9nfnc3a"
+      ],
+      "createdAt": "2026-08-10T15:32:41.277Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "msj0ltgvmu1j",
+      "userId": "msj09w1x8cqs",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:10.831Z"
+    },
+    {
+      "id": "msj0ltgvx2mq",
+      "userId": "msj0ay6i5bix",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:10.831Z"
+    },
+    {
+      "id": "msj0ltgvg1v8",
+      "userId": "msj0bcpxoc7z",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:10.831Z"
+    },
+    {
+      "id": "msj0lu6cpu84",
+      "userId": "msj09w1x8cqs",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:11.748Z"
+    },
+    {
+      "id": "msj0lu6dch3x",
+      "userId": "msj0ay6i5bix",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:11.749Z"
+    },
+    {
+      "id": "msj0lu6de0fn",
+      "userId": "msj0bcpxoc7z",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:11.749Z"
+    },
+    {
+      "id": "msj0lwgqn74v",
+      "userId": "msj09w1x8cqs",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:14.714Z"
+    },
+    {
+      "id": "msj0lwgqxtck",
+      "userId": "msj0ay6i5bix",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:14.714Z"
+    },
+    {
+      "id": "msj0lwgqcam1",
+      "userId": "msj0bcpxoc7z",
+      "text": "کلاس آنلاین شروع شد: \"ذبلددبل\"",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-08-07T14:03:14.714Z"
+    },
+    {
+      "id": "msj41trk5zwp",
+      "userId": "msj09w1x8cqs",
+      "text": "تکلیف جدید: \"ij\"",
+      "type": "assignment",
+      "read": false,
+      "createdAt": "2026-08-07T15:39:36.560Z"
+    },
+    {
+      "id": "msj41trklyms",
+      "userId": "msj0ay6i5bix",
+      "text": "تکلیف جدید: \"ij\"",
+      "type": "assignment",
+      "read": false,
+      "createdAt": "2026-08-07T15:39:36.560Z"
+    },
+    {
+      "id": "msj41trkwu2k",
+      "userId": "msj0bcpxoc7z",
+      "text": "تکلیف جدید: \"ij\"",
+      "type": "assignment",
+      "read": false,
+      "createdAt": "2026-08-07T15:39:36.560Z"
+    },
+    {
+      "id": "msj41v0s9q3z",
+      "userId": "msj09w1x8cqs",
+      "text": "تکلیف جدید: \"ij\"",
+      "type": "assignment",
+      "read": false,
+      "createdAt": "2026-08-07T15:39:38.188Z"
+    },
+    {
+      "id": "msj41v0sqf7h",
+      "userId": "msj0ay6i5bix",
+      "text": "تکلیف جدید: \"ij\"",
+      "type": "assignment",
+      "read": false,
+      "createdAt": "2026-08-07T15:39:38.188Z"
+    },
+    {
+      "id": "msj41v0s4dne",
+      "userId": "msj0bcpxoc7z",
+      "text": "تکلیف جدید: \"ij\"",
+      "type": "assignment",
+      "read": false,
+      "createdAt": "2026-08-07T15:39:38.188Z"
+    },
+    {
+      "id": "msj44264iczm",
+      "userId": "msj09w1x8cqs",
+      "text": "نمره تکلیف شما ثبت شد: -20",
+      "type": "grade",
+      "read": false,
+      "createdAt": "2026-08-07T15:41:20.764Z"
+    }
+  ],
+  "classSessions": [
+    {
+      "id": "msj0ltgvo5zp",
+      "classId": "msj0ahswjo6b",
+      "title": "ذبلددبل",
+      "teacherId": "msj0a9nfnc3a",
+      "teacherName": "نئتدنتدام",
+      "students": [
+        "msj09w1x8cqs",
+        "msj0ay6i5bix",
+        "msj0bcpxoc7z"
+      ],
+      "meetLink": "",
+      "active": true,
+      "startedAt": "2026-08-07T14:03:10.831Z",
+      "whiteboardData": [],
+      "breakoutGroups": [],
+      "breakoutActive": false,
+      "livePoll": null,
+      "recordings": [
+        {
+          "url": "/uploads/msj0pudoyhf7.webm",
+          "name": "ضبط-۱۴۰۵/۵/۱۶.webm",
+          "createdAt": "2026-08-07T14:06:18.644Z"
+        }
+      ]
+    },
+    {
+      "id": "msj0lu6ct0fw",
+      "classId": "msj0ahswjo6b",
+      "title": "ذبلددبل",
+      "teacherId": "msj0a9nfnc3a",
+      "teacherName": "نئتدنتدام",
+      "students": [
+        "msj09w1x8cqs",
+        "msj0ay6i5bix",
+        "msj0bcpxoc7z"
+      ],
+      "meetLink": "",
+      "active": true,
+      "startedAt": "2026-08-07T14:03:11.748Z",
+      "whiteboardData": [],
+      "breakoutGroups": [],
+      "breakoutActive": false,
+      "livePoll": null
+    },
+    {
+      "id": "msj0lwgqbzhw",
+      "classId": "msj0ahswjo6b",
+      "title": "ذبلددبل",
+      "teacherId": "msj0a9nfnc3a",
+      "teacherName": "نئتدنتدام",
+      "students": [
+        "msj09w1x8cqs",
+        "msj0ay6i5bix",
+        "msj0bcpxoc7z"
+      ],
+      "meetLink": "",
+      "active": true,
+      "startedAt": "2026-08-07T14:03:14.714Z",
+      "whiteboardData": [],
+      "breakoutGroups": [],
+      "breakoutActive": false,
+      "livePoll": null
+    }
+  ],
+  "classMessages": [],
+  "uploads": [],
+  "questionBank": [],
+  "studentNotes": [],
+  "badges": [],
+  "studentBadges": [],
+  "assignmentTemplates": [],
+  "quizTemplates": [],
+  "studentXP": [
+    {
+      "studentId": "msj09w1x8cqs",
+      "totalXP": 10,
+      "history": [
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-08-07T13:58:19.108Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-08-07T15:36:40.450Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-08-07T15:38:33.550Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-08-08T08:15:59.223Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-08-10T14:43:31.098Z"
+        }
+      ]
+    }
+  ],
+  "studentStreaks": [
+    {
+      "studentId": "msj09w1x8cqs",
+      "currentStreak": 1,
+      "longestStreak": 2,
+      "lastActiveDate": "2026-08-10"
+    }
+  ],
+  "flashcardReviews": [],
+  "messageReactions": [
+    {
+      "id": "msj0faaxoglf",
+      "messageId": "msj0f2ofvjrv",
+      "userId": "msj09w1x8cqs",
+      "emoji": "👍",
+      "createdAt": "2026-08-07T13:58:06.057Z"
+    },
+    {
+      "id": "msk40zmzbc2d",
+      "messageId": "msk409nz5gi0",
+      "userId": "msj0a9nfnc3a",
+      "emoji": "😂",
+      "createdAt": "2026-08-08T08:26:43.691Z"
+    }
+  ],
+  "pinnedMessages": [],
+  "userPresence": [
+    {
+      "userId": "msj09w1x8cqs",
+      "lastSeen": "2026-08-08T08:20:15.769Z"
+    }
+  ],
+  "roomUserPrefs": [
+    {
+      "roomId": "room_msj0ahswjo6b",
+      "userId": "msj0a9nfnc3a",
+      "pinned": false,
+      "archived": true
+    }
+  ],
+  "announcements": [
+    {
+      "id": "msj0db34ocf9",
+      "title": "ما خیلی خفنیم",
+      "body": "به نام قانون",
+      "active": true,
+      "createdAt": "2026-08-07T13:56:33.760Z"
+    }
+  ],
+  "faqs": [],
+  "contactMessages": [
+    {
+      "id": "msj3yw10wt96",
+      "name": "Hi dhxy",
+      "email": "jdxssys",
+      "message": "YesusuwhstA",
+      "read": true,
+      "createdAt": "2026-08-07T15:37:19.524Z"
+    }
+  ],
+  "activityLog": [
+    {
+      "id": "msj088txo4fm",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T13:52:37.557Z"
+    },
+    {
+      "id": "msj09w1y20lq",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: قلثقل (student)",
+      "createdAt": "2026-08-07T13:53:54.310Z"
+    },
+    {
+      "id": "msj0a9nfvapu",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: نئتدنتدام (teacher)",
+      "createdAt": "2026-08-07T13:54:11.931Z"
+    },
+    {
+      "id": "msj0ahsw29f6",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_class",
+      "details": "کلاس جدید: ذفاذقفذفق (معلم: نئتدنتدام)",
+      "createdAt": "2026-08-07T13:54:22.496Z"
+    },
+    {
+      "id": "msj0ay6ixo4a",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: ذبلذلب (student)",
+      "createdAt": "2026-08-07T13:54:43.722Z"
+    },
+    {
+      "id": "msj0bcpxz0pg",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: ljkljoilj (student)",
+      "createdAt": "2026-08-07T13:55:02.565Z"
+    },
+    {
+      "id": "msj0cbxnl89y",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: dgdfgd (teacher)",
+      "createdAt": "2026-08-07T13:55:48.203Z"
+    },
+    {
+      "id": "msj0co9ssb7o",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_class",
+      "details": "کلاس جدید: dgdfgd (معلم: dgdfgd)",
+      "createdAt": "2026-08-07T13:56:04.192Z"
+    },
+    {
+      "id": "msj0db34h2bk",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_announcement",
+      "details": "ما خیلی خفنیم",
+      "createdAt": "2026-08-07T13:56:33.760Z"
+    },
+    {
+      "id": "msj0ei72bj9x",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T13:57:29.630Z"
+    },
+    {
+      "id": "msj0i7cxfw0x",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T14:00:22.209Z"
+    },
+    {
+      "id": "msj0j4g6x13y",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "backup_export",
+      "details": "دانلود پشتیبان دیتابیس",
+      "createdAt": "2026-08-07T14:01:05.094Z"
+    },
+    {
+      "id": "msj0lkmqeal0",
+      "userId": "msj0a9nfnc3a",
+      "userName": "نئتدنتدام",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T14:02:59.378Z"
+    },
+    {
+      "id": "msj0oltk5aol",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T14:05:20.888Z"
+    },
+    {
+      "id": "msj3ubp2mmtx",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T15:33:46.550Z"
+    },
+    {
+      "id": "msj3xsc4x56x",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T15:36:28.084Z"
+    },
+    {
+      "id": "msj3yhbs39m8",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T15:37:00.472Z"
+    },
+    {
+      "id": "msj40enzum9e",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T15:38:30.335Z"
+    },
+    {
+      "id": "msj41g782ruj",
+      "userId": "msj0a9nfnc3a",
+      "userName": "نئتدنتدام",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-07T15:39:18.980Z"
+    },
+    {
+      "id": "msk3lgc0v6ly",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-08T08:14:38.832Z"
+    },
+    {
+      "id": "msk3qfdp12gg",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-08T08:18:30.877Z"
+    },
+    {
+      "id": "msk3sgrri5fx",
+      "userId": "msj0a9nfnc3a",
+      "userName": "نئتدنتدام",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-08T08:20:05.991Z"
+    },
+    {
+      "id": "msk3zi67nbda",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-08T08:25:34.399Z"
+    },
+    {
+      "id": "msk4cj4jxa73",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-08T08:35:42.163Z"
+    },
+    {
+      "id": "msk4mfli2lf1",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "backup_export",
+      "details": "دانلود پشتیبان دیتابیس",
+      "createdAt": "2026-08-08T08:43:24.150Z"
+    },
+    {
+      "id": "msk4mtm0og1h",
+      "userId": "msj05achi8z4",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "backup_restore",
+      "details": "دیتابیس از فایل پشتیبان بازیابی شد",
+      "createdAt": "2026-08-08T08:43:42.312Z"
+    },
+    {
+      "id": "msnc81zjjexn",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-10T14:39:28.783Z"
+    },
+    {
+      "id": "msnc83syk2no",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-10T14:39:31.138Z"
+    },
+    {
+      "id": "msncdm5khwjf",
+      "userId": "msj0a9nfnc3a",
+      "userName": "نئتدنتدام",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-10T14:43:48.200Z"
+    },
+    {
+      "id": "msne2ir0t5oi",
+      "userId": "msj09w1x8cqs",
+      "userName": "قلثقل",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-08-10T15:31:09.804Z"
+    }
+  ],
+  "settings": {}
+}

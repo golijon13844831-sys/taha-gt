@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیر</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--pri:#e94560;--blue:#3498db;--green:#2ecc71;--yellow:#f1c40f;--purple:#9b59b6;--text:#e6edf3;--muted:#8b949e;--inp:#0d1117}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);direction:rtl;display:flex;min-height:100vh}
+.sb{width:220px;min-height:100vh;background:var(--bg);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:18px 0;position:fixed;right:0;top:0;z-index:10}
+.sb-logo{padding:0 16px 18px;border-bottom:1px solid var(--border)}
+.sb-logo h2{font-size:.95rem;color:var(--text)}.sb-logo p{font-size:.72rem;color:var(--muted);margin-top:2px}
+.sb-nav{flex:1;padding:10px 0}
+.ni{display:flex;align-items:center;gap:8px;padding:10px 16px;color:var(--muted);font-size:.88rem;cursor:pointer;transition:all .2s;border-right:3px solid transparent}
+.ni:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.ni.active{color:var(--pri);background:rgba(233,69,96,.08);border-right-color:var(--pri)}
+.sb-bot{padding:12px 16px;border-top:1px solid var(--border)}
+.urow{display:flex;align-items:center;gap:8px}
+.av{width:32px;height:32px;border-radius:50%;background:var(--pri);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.82rem;flex-shrink:0}
+.un{font-size:.85rem}.ur{font-size:.7rem;color:var(--muted)}
+.lbtn{margin-top:10px;width:100%;padding:7px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:inherit;font-size:.8rem;cursor:pointer}
+.lbtn:hover{border-color:var(--pri);color:var(--pri)}
+.main{margin-right:220px;flex:1;padding:26px}
+.ph{margin-bottom:22px}.ph h1{font-size:1.4rem}.ph p{color:var(--muted);font-size:.88rem;margin-top:3px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+.sc-i{font-size:1.5rem;margin-bottom:7px}.sc-n{font-size:1.7rem;font-weight:bold}.sc-l{font-size:.78rem;color:var(--muted);margin-top:2px}
+.sec{display:none}.sec.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.ch h2{font-size:1rem}
+.fg{margin-bottom:12px}
+label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px}
+input,select,textarea{width:100%;background:var(--inp);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.9rem;padding:9px 12px;font-family:inherit;direction:rtl;transition:border .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pri)}
+select option{background:var(--card)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{padding:8px 16px;border-radius:8px;border:none;font-family:inherit;font-size:.85rem;cursor:pointer;font-weight:600;transition:all .2s}
+.bp{background:var(--pri);color:#fff}.bp:hover{background:#c0392b}
+.bb{background:var(--blue);color:#fff}.bb:hover{background:#2980b9}
+.bg{background:var(--green);color:#000}.bg:hover{background:#27ae60}
+.bo{background:transparent;border:1px solid var(--border);color:var(--muted)}.bo:hover{border-color:var(--pri);color:var(--pri)}
+.bd{background:rgba(231,76,60,.12);color:#e74c3c;border:1px solid rgba(231,76,60,.3)}
+.bsm{padding:5px 10px;font-size:.78rem}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--border);font-size:.87rem}
+th{color:var(--muted);font-size:.78rem;font-weight:600}
+tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:bold}
+.b-admin{background:rgba(233,69,96,.12);color:var(--pri);border:1px solid var(--pri)}
+.b-teacher{background:rgba(52,152,219,.12);color:var(--blue);border:1px solid var(--blue)}
+.b-student{background:rgba(46,204,113,.12);color:var(--green);border:1px solid var(--green)}
+.b-on{background:rgba(46,204,113,.12);color:var(--green)}.b-off{background:rgba(139,148,158,.1);color:var(--muted)}
+.acts{display:flex;gap:6px}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:center;justify-content:center}
+.mo.open{display:flex}
+.md{background:var(--card);border:1px solid var(--border);border-radius:14px;width:90%;max-width:520px;max-height:85vh;overflow-y:auto;padding:22px}
+.mdh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.mdh h2{font-size:1rem}
+.mc{background:transparent;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer}.mc:hover{color:var(--pri)}
+.multi-select{display:flex;flex-direction:column;gap:6px;max-height:160px;overflow-y:auto;padding:8px;background:var(--inp);border:1px solid var(--border);border-radius:8px}
+.ms-item{display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer;padding:4px 6px;border-radius:6px}
+.ms-item:hover{background:rgba(255,255,255,.04)}
+.ms-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--pri);flex-shrink:0}
+.empty{text-align:center;padding:36px;color:var(--muted)}
+.err{background:rgba(231,76,60,.1);border:1px solid #e74c3c;color:#e74c3c;border-radius:8px;padding:9px 12px;font-size:.85rem;margin-bottom:12px;display:none}
+.succ{background:rgba(46,204,113,.1);border:1px solid #2ecc71;color:#2ecc71;border-radius:8px;padding:9px 12px;font-size:.85rem;margin-bottom:12px;display:none}
+</style>
+</head>
+<body>
+<aside class="sb">
+  <div class="sb-logo"><h2>🎓 سامانه آموزشی</h2><p>پنل مدیر</p></div>
+  <nav class="sb-nav">
+    <div class="ni active" onclick="show('dash')">📊 داشبورد</div>
+    <div class="ni" onclick="show('users')">👥 مدیریت کاربران</div>
+    <div class="ni" onclick="show('classes')">🏫 مدیریت کلاس‌ها</div>
+    <div style="border-top:1px solid var(--border);margin:8px 0"></div>
+    <div class="ni" onclick="show('announcements')">📢 اطلاعیه‌ها</div>
+    <div class="ni" onclick="show('faqs')">❓ سوالات متداول</div>
+    <div class="ni" onclick="show('contactMsgs')">✉️ پیام‌های تماس</div>
+    <div class="ni" onclick="show('activityLog')">📜 لاگ فعالیت</div>
+    <div class="ni" onclick="show('sysSettings')">⚙️ تنظیمات سامانه</div>
+    <div class="ni" onclick="show('backup')">💾 پشتیبان‌گیری</div>
+  </nav>
+  <div class="sb-bot">
+    <div class="urow"><div class="av" id="avL">م</div><div><div class="un" id="uname">مدیر</div><div class="ur">ادمین</div></div></div>
+    <button class="lbtn" onclick="logout()">🚪 خروج</button>
+  </div>
+</aside>
+
+<main class="main">
+  <!-- DASHBOARD -->
+  <div class="sec active" id="sec-dash">
+    <div class="ph"><h1>داشبورد مدیریت 📊</h1><p>خلاصه وضعیت سامانه</p></div>
+    <div class="stats">
+      <div class="sc"><div class="sc-i">👥</div><div class="sc-n" id="st-u">0</div><div class="sc-l">کل کاربران</div></div>
+      <div class="sc"><div class="sc-i">👨‍🏫</div><div class="sc-n" id="st-t">0</div><div class="sc-l">معلمان</div></div>
+      <div class="sc"><div class="sc-i">👨‍🎓</div><div class="sc-n" id="st-s">0</div><div class="sc-l">دانش‌آموزان</div></div>
+      <div class="sc"><div class="sc-i">🏫</div><div class="sc-n" id="st-c">0</div><div class="sc-l">کلاس‌ها</div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><h2>آخرین کاربران</h2><button class="btn bp" onclick="show('users')">مشاهده همه</button></div>
+      <div id="recentUsers"></div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div class="sec" id="sec-users">
+    <div class="ph"><h1>مدیریت کاربران 👥</h1><p>اضافه، ویرایش و حذف معلمان و دانش‌آموزان</p></div>
+    <div class="card">
+      <div class="ch"><h2>لیست کاربران</h2><button class="btn bp" onclick="openAddUser()">+ کاربر جدید</button></div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <select id="filterRole" onchange="renderUsers()" style="width:160px">
+          <option value="">همه نقش‌ها</option>
+          <option value="teacher">معلم</option>
+          <option value="student">دانش‌آموز</option>
+          <option value="admin">مدیر</option>
+        </select>
+        <input type="text" id="searchUser" placeholder="جستجو..." oninput="renderUsers()" style="width:200px"/>
+      </div>
+      <div id="userTable"><div class="empty">در حال بارگذاری...</div></div>
+    </div>
+  </div>
+
+  <!-- CLASSES -->
+  <div class="sec" id="sec-classes">
+    <div class="ph"><h1>مدیریت کلاس‌ها 🏫</h1><p>ایجاد کلاس و اختصاص معلم و دانش‌آموز</p></div>
+    <div class="card">
+      <div class="ch"><h2>لیست کلاس‌ها</h2><button class="btn bp" onclick="openAddClass()">+ کلاس جدید</button></div>
+      <div id="classTable"><div class="empty">در حال بارگذاری...</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ ANNOUNCEMENTS (ارتقا ۱) ═══ -->
+  <div class="sec" id="sec-announcements">
+    <div class="ph"><h1>📢 اطلاعیه‌ها</h1><p>اطلاعیه‌هایی که در صفحه اصلی نمایش داده می‌شوند</p></div>
+    <div class="card">
+      <div class="ch"><h2>اطلاعیه جدید</h2></div>
+      <div class="fg"><label>عنوان</label><input type="text" id="annTitle" placeholder="عنوان اطلاعیه"/></div>
+      <div class="fg"><label>متن (اختیاری)</label><textarea id="annBody" placeholder="توضیحات..."></textarea></div>
+      <button class="btn bp" onclick="addAnnouncement()">➕ انتشار</button>
+    </div>
+    <div class="card">
+      <div class="ch"><h2>لیست اطلاعیه‌ها</h2></div>
+      <div id="annList"><div class="empty">اطلاعیه‌ای موجود نیست</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ FAQ (ارتقا ۲) ═══ -->
+  <div class="sec" id="sec-faqs">
+    <div class="ph"><h1>❓ سوالات متداول</h1><p>سوالاتی که در صفحه اصلی نمایش داده می‌شوند</p></div>
+    <div class="card">
+      <div class="ch"><h2>سوال جدید</h2></div>
+      <div class="fg"><label>سوال</label><input type="text" id="faqQ" placeholder="سوال..."/></div>
+      <div class="fg"><label>پاسخ</label><textarea id="faqA" placeholder="پاسخ..."></textarea></div>
+      <button class="btn bp" onclick="addFaq()">➕ افزودن</button>
+    </div>
+    <div class="card">
+      <div class="ch"><h2>لیست سوالات</h2></div>
+      <div id="faqAdminList"><div class="empty">سوالی موجود نیست</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ CONTACT MESSAGES (ارتقا ۵) ═══ -->
+  <div class="sec" id="sec-contactMsgs">
+    <div class="ph"><h1>✉️ پیام‌های تماس</h1><p>پیام‌های ارسالی از فرم تماس صفحه اصلی</p></div>
+    <div class="card">
+      <div id="contactMsgList"><div class="empty">پیامی موجود نیست</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ ACTIVITY LOG (ارتقا ۳) ═══ -->
+  <div class="sec" id="sec-activityLog">
+    <div class="ph"><h1>📜 لاگ فعالیت سیستم</h1><p>رویدادهای اخیر سامانه</p></div>
+    <div class="card">
+      <div class="ch">
+        <h2>رویدادها</h2>
+        <select id="logFilterAction" onchange="loadActivityLog()" style="width:180px">
+          <option value="">همه رویدادها</option>
+          <option value="login">ورود</option>
+          <option value="create_user">ایجاد کاربر</option>
+          <option value="delete_user">حذف کاربر</option>
+          <option value="create_class">ایجاد کلاس</option>
+          <option value="bulk_user_action">عملیات گروهی</option>
+        </select>
+      </div>
+      <div id="activityLogList"><div class="empty">در حال بارگذاری...</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ SYSTEM SETTINGS (ارتقا ۸ و ۱۰) ═══ -->
+  <div class="sec" id="sec-sysSettings">
+    <div class="ph"><h1>⚙️ تنظیمات سامانه</h1><p>تنظیمات سراسری و مدیریت قابلیت‌ها</p></div>
+    <div class="card">
+      <div class="ch"><h2>اطلاعات کلی</h2></div>
+      <div class="fg"><label>نام مدرسه/سامانه</label><input type="text" id="setSchoolName" placeholder="سامانه آموزشی"/></div>
+      <div class="fg"><label>رنگ اصلی (Hex)</label><input type="text" id="setPrimaryColor" placeholder="#e94560"/></div>
+      <button class="btn bp" onclick="saveSysSettings()">💾 ذخیره تنظیمات</button>
+    </div>
+    <div class="card">
+      <div class="ch"><h2>فعال/غیرفعال کردن قابلیت‌ها</h2></div>
+      <div id="featureFlagsList"></div>
+    </div>
+  </div>
+
+  <!-- ═══ BACKUP + STORAGE (ارتقا ۴ و ۹) ═══ -->
+  <div class="sec" id="sec-backup">
+    <div class="ph"><h1>💾 پشتیبان‌گیری و فضای ذخیره‌سازی</h1></div>
+    <div class="card">
+      <div class="ch"><h2>دانلود پشتیبان کامل دیتابیس</h2></div>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:14px">فایل JSON شامل تمام داده‌های سامانه (بدون رمز عبور کاربران) دانلود می‌شود.</p>
+      <button class="btn bg" onclick="downloadBackup()">⬇️ دانلود پشتیبان</button>
+    </div>
+    <div class="card">
+      <div class="ch"><h2>وضعیت فضای ذخیره‌سازی</h2></div>
+      <div id="storageInfo"><div class="empty">در حال بارگذاری...</div></div>
+    </div>
+    <div class="card" style="border-color:rgba(233,69,96,.3)">
+      <div class="ch"><h2 style="color:var(--pri)">⚠️ بازیابی از فایل پشتیبان</h2></div>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:14px">این عملیات تمام داده‌های فعلی (کلاس‌ها، درس‌ها، پیام‌ها و...) را با محتوای فایل پشتیبان جایگزین می‌کند. رمز عبور کاربران تغییر نمی‌کند. این عمل قابل بازگشت نیست.</p>
+      <input type="file" id="restoreFile" accept=".json" style="margin-bottom:12px"/>
+      <button class="btn bd" onclick="restoreBackup()">🔄 بازیابی دیتابیس</button>
+    </div>
+  </div>
+</main>
+
+<!-- MODAL: BULK ACTIONS (ارتقا ۷) -->
+<div class="mo" id="moBulk">
+  <div class="md">
+    <div class="mdh"><h2>عملیات گروهی روی کاربران انتخاب‌شده</h2><button class="mc" onclick="closeMo('moBulk')">✕</button></div>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px"><span id="bulkCount">0</span> کاربر انتخاب شده است</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn bg" onclick="doBulkAction('activate')">✅ فعال کردن همه</button>
+      <button class="btn bo" onclick="doBulkAction('deactivate')">⏸️ غیرفعال کردن همه</button>
+      <button class="btn bd" onclick="doBulkAction('delete')">🗑️ حذف همه (معلم دارای کلاس رد می‌شود)</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD/EDIT USER -->
+<div class="mo" id="moUser">
+  <div class="md">
+    <div class="mdh"><h2 id="moUserTitle">کاربر جدید</h2><button class="mc" onclick="closeMo('moUser')">✕</button></div>
+    <div class="err" id="uErr"></div>
+    <div class="row2">
+      <div class="fg"><label>نام کامل *</label><input type="text" id="uName" placeholder="نام و نام خانوادگی"/></div>
+      <div class="fg"><label>ایمیل *</label><input type="email" id="uEmail" placeholder="example@school.ir"/></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>رمز عبور *</label><input type="password" id="uPass" placeholder="حداقل ۶ کاراکتر"/></div>
+      <div class="fg"><label>نقش *</label>
+        <select id="uRole" onchange="onRoleChange()">
+          <option value="student">دانش‌آموز</option>
+          <option value="teacher">معلم</option>
+          <option value="admin">مدیر</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg" id="uClassWrap">
+      <label>کلاس‌ها (اختیاری)</label>
+      <div class="multi-select" id="uClassList"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+      <button class="btn bo" onclick="closeMo('moUser')">انصراف</button>
+      <button class="btn bp" id="uSaveBtn" onclick="saveUser()">ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD/EDIT CLASS -->
+<div class="mo" id="moClass">
+  <div class="md">
+    <div class="mdh"><h2 id="moClassTitle">کلاس جدید</h2><button class="mc" onclick="closeMo('moClass')">✕</button></div>
+    <div class="err" id="cErr"></div>
+    <div class="row2">
+      <div class="fg"><label>نام کلاس *</label><input type="text" id="cName" placeholder="مثال: ریاضی دهم"/></div>
+      <div class="fg"><label>درس/موضوع</label><input type="text" id="cSubject" placeholder="مثال: ریاضی"/></div>
+    </div>
+    <div class="fg"><label>معلم *</label><select id="cTeacher"></select></div>
+    <div class="fg">
+      <label>دانش‌آموزان</label>
+      <div class="multi-select" id="cStudents"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+      <button class="btn bo" onclick="closeMo('moClass')">انصراف</button>
+      <button class="btn bp" id="cSaveBtn" onclick="saveClass()">ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const token=localStorage.getItem('token');
+const user=JSON.parse(localStorage.getItem('user')||'null');
+if(!token||!user||user.role!=='admin')location.href='/';
+document.getElementById('uname').textContent=user.name;
+document.getElementById('avL').textContent=user.name[0];
+
+let allUsers=[],allClasses=[],editUserId=null,editClassId=null;
+
+async function api(method,path,body){
+  const r=await fetch(path,{method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:body?JSON.stringify(body):undefined});
+  if(r.status===401){localStorage.clear();location.href='/';return null;}
+  return r.json();
+}
+
+const secMap={dash:0,users:1,classes:2,announcements:3,faqs:4,contactMsgs:5,activityLog:6,sysSettings:7,backup:8};
+function show(name){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach((n,i)=>n.classList.toggle('active',i===secMap[name]));
+  document.getElementById('sec-'+name).classList.add('active');
+  if(name==='dash')loadDash();
+  if(name==='users')loadUsers();
+  if(name==='classes')loadClasses();
+  if(name==='announcements')loadAnnouncements();
+  if(name==='faqs')loadFaqsAdmin();
+  if(name==='contactMsgs')loadContactMsgs();
+  if(name==='activityLog')loadActivityLog();
+  if(name==='sysSettings')loadSysSettings();
+  if(name==='backup')loadStorageInfo();
+}
+
+async function loadDash(){
+  const stats=await api('GET','/api/admin/stats');
+  document.getElementById('st-u').textContent=stats.users;
+  document.getElementById('st-t').textContent=stats.teachers;
+  document.getElementById('st-s').textContent=stats.students;
+  document.getElementById('st-c').textContent=stats.classes;
+  const users=await api('GET','/api/admin/users');
+  allUsers=users;
+  const el=document.getElementById('recentUsers');
+  if(!users.length){el.innerHTML='<div class="empty">هنوز کاربری ثبت نشده</div>';return;}
+  el.innerHTML=`<table><thead><tr><th>نام</th><th>ایمیل</th><th>نقش</th><th>وضعیت</th></tr></thead><tbody>${users.slice(-6).reverse().map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td>${roleBadge(u.role)}</td><td><span class="badge ${u.active!==false?'b-on':'b-off'}">${u.active!==false?'فعال':'غیرفعال'}</span></td></tr>`).join('')}</tbody></table>`;
+}
+
+async function loadUsers(){
+  const users=await api('GET','/api/admin/users');
+  allUsers=users;renderUsers();
+}
+
+function renderUsers(){
+  const role=document.getElementById('filterRole').value;
+  const q=document.getElementById('searchUser').value.toLowerCase();
+  let list=allUsers.filter(u=>(!role||u.role===role)&&(!q||u.name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q)));
+  const el=document.getElementById('userTable');
+  if(!list.length){el.innerHTML='<div class="empty">کاربری یافت نشد</div>';return;}
+  el.innerHTML=`<table><thead><tr><th>نام</th><th>ایمیل</th><th>نقش</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody>${list.map(u=>`<tr>
+    <td>${u.name}</td><td style="direction:ltr;text-align:right">${u.email}</td>
+    <td>${roleBadge(u.role)}</td>
+    <td><span class="badge ${u.active!==false?'b-on':'b-off'}">${u.active!==false?'فعال':'غیرفعال'}</span></td>
+    <td><div class="acts">
+      <button class="btn bb bsm" onclick="openEditUser('${u.id}')">✏️</button>
+      <button class="btn ${u.active!==false?'bo':'bg'} bsm" onclick="toggleUser('${u.id}',${u.active!==false})">${u.active!==false?'غیرفعال':'فعال'}</button>
+      ${u.role!=='admin'?`<button class="btn bd bsm" onclick="delUser('${u.id}')">🗑️</button>`:''}
+    </div></td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+function roleBadge(r){return{admin:`<span class="badge b-admin">مدیر</span>`,teacher:`<span class="badge b-teacher">معلم</span>`,student:`<span class="badge b-student">دانش‌آموز</span>`}[r]||r}
+
+async function openAddUser(){
+  editUserId=null;
+  document.getElementById('moUserTitle').textContent='کاربر جدید';
+  document.getElementById('uSaveBtn').textContent='ذخیره';
+  ['uName','uEmail','uPass'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('uRole').value='student';
+  onRoleChange();
+  if(!allClasses.length)allClasses=await api('GET','/api/classes');
+  renderClassCheckboxes('uClassList',[]);
+  document.getElementById('moUser').classList.add('open');
+}
+
+async function openEditUser(id){
+  const u=allUsers.find(u=>u.id===id);if(!u)return;
+  editUserId=id;
+  document.getElementById('moUserTitle').textContent='ویرایش کاربر';
+  document.getElementById('uSaveBtn').textContent='بروزرسانی';
+  document.getElementById('uName').value=u.name;
+  document.getElementById('uEmail').value=u.email;
+  document.getElementById('uPass').value='';
+  document.getElementById('uRole').value=u.role;
+  onRoleChange();
+  if(!allClasses.length)allClasses=await api('GET','/api/classes');
+  renderClassCheckboxes('uClassList',u.classIds||[]);
+  document.getElementById('moUser').classList.add('open');
+}
+
+function onRoleChange(){
+  const r=document.getElementById('uRole').value;
+  document.getElementById('uClassWrap').style.display=r==='admin'?'none':'';
+}
+
+function renderClassCheckboxes(containerId,selected){
+  const el=document.getElementById(containerId);
+  if(!allClasses.length){el.innerHTML='<div style="color:var(--muted);font-size:.82rem;padding:8px">ابتدا کلاس بسازید</div>';return;}
+  el.innerHTML=allClasses.map(c=>`<label class="ms-item"><input type="checkbox" value="${c.id}" ${selected.includes(c.id)?'checked':''}> ${c.name}</label>`).join('');
+}
+
+function getChecked(containerId){
+  return [...document.getElementById(containerId).querySelectorAll('input:checked')].map(i=>i.value);
+}
+
+async function saveUser(){
+  const name=document.getElementById('uName').value.trim();
+  const email=document.getElementById('uEmail').value.trim();
+  const pass=document.getElementById('uPass').value;
+  const role=document.getElementById('uRole').value;
+  const classIds=getChecked('uClassList');
+  const errEl=document.getElementById('uErr');
+
+  if(!name||!email)return showMoErr('uErr','نام و ایمیل الزامی است');
+  if(!editUserId&&!pass)return showMoErr('uErr','رمز عبور الزامی است');
+
+  const body={name,email,role,classIds};
+  if(pass)body.password=pass;
+
+  const data=editUserId?await api('PATCH',`/api/admin/users/${editUserId}`,body):await api('POST','/api/admin/users',body);
+  if(data.error)return showMoErr('uErr',data.error);
+  closeMo('moUser');loadUsers();loadDash();
+}
+
+async function toggleUser(id,isActive){
+  await api('PATCH',`/api/admin/users/${id}`,{active:!isActive});
+  loadUsers();
+}
+
+async function delUser(id){
+  if(!confirm('این کاربر حذف شود؟'))return;
+  const res=await api('DELETE',`/api/admin/users/${id}`);
+  if(res&&res.error){alert(res.error);return;}
+  loadUsers();loadDash();
+}
+
+// CLASSES
+async function loadClasses(){
+  const classes=await api('GET','/api/classes');
+  allClasses=classes;
+  const teachers=allUsers.length?allUsers.filter(u=>u.role==='teacher'):( await api('GET','/api/admin/users')).filter(u=>u.role==='teacher');
+  const el=document.getElementById('classTable');
+  if(!classes.length){el.innerHTML='<div class="empty">هنوز کلاسی نساخته‌اید</div>';return;}
+  el.innerHTML=`<table><thead><tr><th>نام کلاس</th><th>درس</th><th>معلم</th><th>دانش‌آموز</th><th>عملیات</th></tr></thead><tbody>${classes.map(c=>`<tr>
+    <td>${c.name}</td><td>${c.subject||'—'}</td><td>${c.teacherName}</td><td>${(c.studentIds||[]).length} نفر</td>
+    <td><div class="acts">
+      <button class="btn bb bsm" onclick="openEditClass('${c.id}')">✏️</button>
+      <button class="btn bd bsm" onclick="delClass('${c.id}')">🗑️</button>
+    </div></td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+async function openAddClass(){
+  editClassId=null;
+  allUsers=await api('GET','/api/admin/users');
+  allClasses=await api('GET','/api/classes');
+  document.getElementById('moClassTitle').textContent='کلاس جدید';
+  document.getElementById('cSaveBtn').textContent='ذخیره';
+  document.getElementById('cName').value='';
+  document.getElementById('cSubject').value='';
+  const teachers=allUsers.filter(u=>u.role==='teacher'&&u.active!==false);
+  document.getElementById('cTeacher').innerHTML=teachers.length?teachers.map(t=>`<option value="${t.id}">${t.name}</option>`).join(''):'<option value="">ابتدا معلم اضافه کنید</option>';
+  const students=allUsers.filter(u=>u.role==='student'&&u.active!==false);
+  document.getElementById('cStudents').innerHTML=students.map(s=>`<label class="ms-item"><input type="checkbox" value="${s.id}"> ${s.name}</label>`).join('');
+  document.getElementById('moClass').classList.add('open');
+}
+
+async function openEditClass(id){
+  editClassId=id;
+  allUsers=await api('GET','/api/admin/users');
+  const cls=allClasses.find(c=>c.id===id);if(!cls)return;
+  document.getElementById('moClassTitle').textContent='ویرایش کلاس';
+  document.getElementById('cSaveBtn').textContent='بروزرسانی';
+  document.getElementById('cName').value=cls.name;
+  document.getElementById('cSubject').value=cls.subject||'';
+  const teachers=allUsers.filter(u=>u.role==='teacher'&&u.active!==false);
+  document.getElementById('cTeacher').innerHTML=teachers.map(t=>`<option value="${t.id}" ${t.id===cls.teacherId?'selected':''}>${t.name}</option>`).join('');
+  const students=allUsers.filter(u=>u.role==='student'&&u.active!==false);
+  document.getElementById('cStudents').innerHTML=students.map(s=>`<label class="ms-item"><input type="checkbox" value="${s.id}" ${(cls.studentIds||[]).includes(s.id)?'checked':''}> ${s.name}</label>`).join('');
+  document.getElementById('moClass').classList.add('open');
+}
+
+async function saveClass(){
+  const name=document.getElementById('cName').value.trim();
+  const subject=document.getElementById('cSubject').value.trim();
+  const teacherId=document.getElementById('cTeacher').value;
+  const studentIds=getChecked('cStudents');
+  if(!name||!teacherId)return showMoErr('cErr','نام کلاس و معلم الزامی است');
+  const body={name,subject,teacherId,studentIds};
+  const data=editClassId?await api('PATCH',`/api/classes/${editClassId}`,body):await api('POST','/api/classes',body);
+  if(data.error)return showMoErr('cErr',data.error);
+  closeMo('moClass');loadClasses();loadDash();
+}
+
+async function delClass(id){
+  if(!confirm('این کلاس حذف شود؟'))return;
+  await api('DELETE',`/api/classes/${id}`);
+  loadClasses();loadDash();
+}
+
+// ═══════════════════════════════
+//  ANNOUNCEMENTS (ارتقا ۱)
+// ═══════════════════════════════
+async function loadAnnouncements(){
+  const list=await api('GET','/api/admin/announcements')||[];
+  const el=document.getElementById('annList');
+  if(!list.length){el.innerHTML='<div class="empty">اطلاعیه‌ای موجود نیست</div>';return;}
+  el.innerHTML=list.map(a=>`<div class="qi">
+    <div class="qi-info"><div class="qi-title">${a.title}</div><div class="qi-meta">${a.body?a.body.substring(0,80):''} · ${new Date(a.createdAt).toLocaleDateString('fa-IR')} · ${a.active!==false?'<span class="badge b-on">فعال</span>':'<span class="badge b-off">غیرفعال</span>'}</div></div>
+    <div class="acts">
+      <button class="btn bo bsm" onclick="toggleAnn('${a.id}',${a.active!==false})">${a.active!==false?'غیرفعال':'فعال'}</button>
+      <button class="btn bd bsm" onclick="delAnn('${a.id}')">🗑️</button>
+    </div>
+  </div>`).join('');
+}
+async function addAnnouncement(){
+  const title=document.getElementById('annTitle').value.trim();
+  if(!title)return alert('عنوان الزامی است');
+  const body=document.getElementById('annBody').value.trim();
+  await api('POST','/api/admin/announcements',{title,body});
+  document.getElementById('annTitle').value='';document.getElementById('annBody').value='';
+  loadAnnouncements();
+}
+async function toggleAnn(id,isActive){await api('PATCH',`/api/admin/announcements/${id}`,{active:!isActive});loadAnnouncements();}
+async function delAnn(id){if(!confirm('حذف شود؟'))return;await api('DELETE',`/api/admin/announcements/${id}`);loadAnnouncements();}
+
+// ═══════════════════════════════
+//  FAQ (ارتقا ۲)
+// ═══════════════════════════════
+async function loadFaqsAdmin(){
+  const list=await api('GET','/api/admin/faqs')||[];
+  const el=document.getElementById('faqAdminList');
+  if(!list.length){el.innerHTML='<div class="empty">سوالی موجود نیست</div>';return;}
+  el.innerHTML=list.map(f=>`<div class="qi">
+    <div class="qi-info"><div class="qi-title">${f.question}</div><div class="qi-meta">${f.answer.substring(0,80)}</div></div>
+    <div class="acts"><button class="btn bd bsm" onclick="delFaq('${f.id}')">🗑️</button></div>
+  </div>`).join('');
+}
+async function addFaq(){
+  const question=document.getElementById('faqQ').value.trim();
+  const answer=document.getElementById('faqA').value.trim();
+  if(!question||!answer)return alert('سوال و پاسخ الزامی است');
+  await api('POST','/api/admin/faqs',{question,answer});
+  document.getElementById('faqQ').value='';document.getElementById('faqA').value='';
+  loadFaqsAdmin();
+}
+async function delFaq(id){if(!confirm('حذف شود؟'))return;await api('DELETE',`/api/admin/faqs/${id}`);loadFaqsAdmin();}
+
+// ═══════════════════════════════
+//  CONTACT MESSAGES (ارتقا ۵)
+// ═══════════════════════════════
+async function loadContactMsgs(){
+  const list=await api('GET','/api/admin/contact-messages')||[];
+  const el=document.getElementById('contactMsgList');
+  if(!list.length){el.innerHTML='<div class="empty">پیامی موجود نیست</div>';return;}
+  el.innerHTML=list.map(m=>`<div class="item-card" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+      <div>
+        <div style="font-weight:600;font-size:.92rem">${m.name} ${!m.read?'<span class="badge b-on" style="margin-right:6px">جدید</span>':''}</div>
+        <div style="font-size:.8rem;color:var(--muted);direction:ltr;text-align:right">${m.email}</div>
+      </div>
+      <div class="acts">
+        ${!m.read?`<button class="btn bo bsm" onclick="markContactRead('${m.id}')">خوانده شد</button>`:''}
+        <button class="btn bd bsm" onclick="delContactMsg('${m.id}')">🗑️</button>
+      </div>
+    </div>
+    <div style="font-size:.87rem;margin-top:8px;line-height:1.6">${m.message}</div>
+    <div style="font-size:.75rem;color:var(--muted);margin-top:8px">${new Date(m.createdAt).toLocaleString('fa-IR')}</div>
+  </div>`).join('');
+}
+async function markContactRead(id){await api('PATCH',`/api/admin/contact-messages/${id}/read`);loadContactMsgs();}
+async function delContactMsg(id){if(!confirm('حذف شود؟'))return;await api('DELETE',`/api/admin/contact-messages/${id}`);loadContactMsgs();}
+
+// ═══════════════════════════════
+//  ACTIVITY LOG (ارتقا ۳)
+// ═══════════════════════════════
+async function loadActivityLog(){
+  const action=document.getElementById('logFilterAction').value;
+  const list=await api('GET','/api/admin/activity-log'+(action?`?action=${action}`:''))||[];
+  const el=document.getElementById('activityLogList');
+  if(!list.length){el.innerHTML='<div class="empty">رویدادی ثبت نشده</div>';return;}
+  const actionLabel={login:'🔑 ورود',create_user:'➕ ایجاد کاربر',delete_user:'🗑️ حذف کاربر',create_class:'🏫 ایجاد کلاس',bulk_user_action:'👥 عملیات گروهی',create_announcement:'📢 اطلاعیه جدید',backup_export:'💾 دانلود پشتیبان',update_settings:'⚙️ تغییر تنظیمات',update_feature_flags:'🚦 تغییر قابلیت‌ها'};
+  el.innerHTML=`<table><thead><tr><th>رویداد</th><th>کاربر</th><th>جزئیات</th><th>زمان</th></tr></thead><tbody>${list.map(l=>`
+    <tr><td>${actionLabel[l.action]||l.action}</td><td>${l.userName} <span style="color:var(--muted);font-size:.75rem">(${l.userRole})</span></td><td style="font-size:.82rem;color:var(--muted)">${l.details||'—'}</td><td style="font-size:.78rem;color:var(--muted)">${new Date(l.createdAt).toLocaleString('fa-IR')}</td></tr>
+  `).join('')}</tbody></table>`;
+}
+
+// ═══════════════════════════════
+//  SYSTEM SETTINGS + FEATURE FLAGS (ارتقا ۸ و ۱۰)
+// ═══════════════════════════════
+const featureLabels={chat:'💬 پیام‌رسان',virtualClass:'🎥 کلاس مجازی',quizzes:'📋 آزمون‌ساز',polls:'📊 نظرسنجی',questionBank:'🗂️ بانک سوال',leaderboard:'🏆 رتبه‌بندی'};
+async function loadSysSettings(){
+  const settings=await api('GET','/api/settings')||{};
+  document.getElementById('setSchoolName').value=settings.schoolName||'';
+  document.getElementById('setPrimaryColor').value=settings.primaryColor||'';
+  const flags=await api('GET','/api/feature-flags')||{};
+  document.getElementById('featureFlagsList').innerHTML=Object.keys(featureLabels).map(key=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:.9rem">${featureLabels[key]}</span>
+      <label style="position:relative;display:inline-block;width:44px;height:24px">
+        <input type="checkbox" ${flags[key]!==false?'checked':''} onchange="updateFeatureFlag('${key}',this.checked)" style="opacity:0;width:0;height:0">
+        <span onclick="this.previousElementSibling.click()" style="position:absolute;cursor:pointer;inset:0;background:${flags[key]!==false?'var(--pri)':'var(--border)'};border-radius:24px;transition:.2s">
+          <span style="position:absolute;height:18px;width:18px;left:${flags[key]!==false?'3px':'23px'};bottom:3px;background:#fff;border-radius:50%;transition:.2s"></span>
+        </span>
+      </label>
+    </div>`).join('');
+}
+async function saveSysSettings(){
+  const schoolName=document.getElementById('setSchoolName').value.trim();
+  const primaryColor=document.getElementById('setPrimaryColor').value.trim();
+  await api('PATCH','/api/admin/settings',{schoolName,primaryColor});
+  alert('✅ تنظیمات ذخیره شد');
+}
+async function updateFeatureFlag(key,val){
+  await api('PATCH','/api/admin/feature-flags',{[key]:val});
+  loadSysSettings();
+}
+
+// ═══════════════════════════════
+//  BACKUP + STORAGE (ارتقا ۴ و ۹)
+// ═══════════════════════════════
+async function downloadBackup(){
+  const r=await fetch('/api/admin/backup',{headers:{'Authorization':'Bearer '+token}});
+  if(!r.ok)return alert('خطا در دریافت پشتیبان');
+  const blob=await r.blob();
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+async function restoreBackup(){
+  const input=document.getElementById('restoreFile');
+  const file=input.files[0];
+  if(!file)return alert('یک فایل پشتیبان انتخاب کنید');
+  if(!confirm('⚠️ تمام داده‌های فعلی جایگزین می‌شود و این عمل قابل بازگشت نیست. آیا مطمئن هستید؟'))return;
+  try{
+    const text=await file.text();
+    const data=JSON.parse(text);
+    const res=await api('POST','/api/admin/restore',data);
+    if(res?.error)return alert('خطا: '+res.error);
+    alert(`✅ بازیابی موفق بود. ${res.usersRestored} کاربر بازیابی شد. صفحه رفرش می‌شود.`);
+    location.reload();
+  }catch(e){alert('فایل پشتیبان نامعتبر است: '+e.message);}
+}
+function formatBytes(bytes){
+  if(bytes===0)return '0 B';
+  const k=1024,sizes=['B','KB','MB','GB'];
+  const i=Math.floor(Math.log(bytes)/Math.log(k));
+  return `${(bytes/Math.pow(k,i)).toFixed(1)} ${sizes[i]}`;
+}
+async function loadStorageInfo(){
+  const info=await api('GET','/api/admin/storage');
+  if(!info)return;
+  document.getElementById('storageInfo').innerHTML=`
+    <div class="stats">
+      <div class="sc"><div class="sc-i">📁</div><div class="sc-n">${info.uploadsFileCount}</div><div class="sc-l">فایل آپلودشده</div></div>
+      <div class="sc"><div class="sc-i">💽</div><div class="sc-n" style="font-size:1.3rem">${formatBytes(info.uploadsSizeBytes)}</div><div class="sc-l">حجم فایل‌ها</div></div>
+      <div class="sc"><div class="sc-i">🗄️</div><div class="sc-n" style="font-size:1.3rem">${formatBytes(info.dbSizeBytes)}</div><div class="sc-l">حجم دیتابیس</div></div>
+      <div class="sc"><div class="sc-i">📊</div><div class="sc-n" style="font-size:1.3rem">${formatBytes(info.totalSizeBytes)}</div><div class="sc-l">مجموع فضا</div></div>
+    </div>`;
+}
+
+// ═══════════════════════════════
+//  BULK ACTIONS (ارتقا ۷)
+// ═══════════════════════════════
+let selectedUserIds=new Set();
+function toggleUserSelect(id,checked){
+  if(checked)selectedUserIds.add(id);else selectedUserIds.delete(id);
+  updateBulkBar();
+}
+function updateBulkBar(){
+  const bar=document.getElementById('bulkActionBar');
+  if(!bar)return;
+  bar.style.display=selectedUserIds.size?'flex':'none';
+  const cntEl=document.getElementById('bulkSelCount');
+  if(cntEl)cntEl.textContent=selectedUserIds.size;
+}
+function openBulkModal(){
+  if(!selectedUserIds.size)return alert('ابتدا کاربرانی را انتخاب کنید');
+  document.getElementById('bulkCount').textContent=selectedUserIds.size;
+  document.getElementById('moBulk').classList.add('open');
+}
+async function doBulkAction(action){
+  const res=await api('POST','/api/admin/users/bulk',{userIds:[...selectedUserIds],action});
+  closeMo('moBulk');
+  if(res)alert(`✅ عملیات روی ${res.affected} کاربر انجام شد`);
+  selectedUserIds.clear();updateBulkBar();
+  loadUsers();
+}
+
+
+function closeMo(id){document.getElementById(id).classList.remove('open')}
+function logout(){localStorage.clear();location.href='/'}
+loadDash();
+</script>
+</body>
+</html>

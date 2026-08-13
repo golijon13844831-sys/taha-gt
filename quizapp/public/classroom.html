@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>کلاس مجازی</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e14;--panel:#131a24;--card:#161b22;--border:#2a3441;--pri:#e94560;--blue:#3498db;--green:#2ecc71;--yellow:#f1c40f;--purple:#9b59b6;--text:#e6edf3;--muted:#8b949e;--inp:#0d1117}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);direction:rtl;height:100vh;display:flex;flex-direction:column;overflow:hidden;user-select:none}
+input,textarea,button{user-select:auto}
+
+/* ═══ TOP BAR ═══ */
+.topbar{background:var(--panel);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;z-index:100}
+.live-badge{display:flex;align-items:center;gap:6px;background:rgba(233,69,96,.12);border:1px solid var(--pri);border-radius:20px;padding:4px 10px;font-size:.75rem;color:var(--pri);font-weight:bold}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--pri);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.session-title{font-size:.92rem;font-weight:600}
+.session-meta{font-size:.75rem;color:var(--muted)}
+.topbar-center{flex:1;display:flex;justify-content:center;gap:6px}
+.media-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.media-btn:hover{border-color:var(--blue)}
+.media-btn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.media-btn.off-red{background:rgba(233,69,96,.15);color:var(--pri);border-color:var(--pri)}
+.media-btn.rec{background:var(--pri);color:#fff;border-color:var(--pri);animation:pulse 1.5s infinite}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.tbtn{padding:7px 13px;border-radius:8px;border:none;font-family:inherit;font-size:.8rem;cursor:pointer;font-weight:600;transition:all .2s;white-space:nowrap}
+.tbtn-outline{background:transparent;border:1px solid var(--border);color:var(--muted)}.tbtn-outline:hover{border-color:var(--pri);color:var(--pri)}
+.tbtn-blue{background:var(--blue);color:#fff}
+.tbtn-purple{background:var(--purple);color:#fff}
+.tbtn-yellow{background:var(--yellow);color:#000}
+.tbtn-red{background:var(--pri);color:#fff}
+
+/* ═══ LAYOUT: pod workspace ═══ */
+.workspace{flex:1;position:relative;overflow:hidden;background:var(--bg);background-image:radial-gradient(circle,#1a2332 1px,transparent 1px);background-size:20px 20px}
+
+/* ═══ POD (draggable/resizable panel like Adobe Connect) ═══ */
+.pod{position:absolute;background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.3);min-width:220px;min-height:160px}
+.pod.focused{border-color:var(--blue);box-shadow:0 4px 24px rgba(52,152,219,.25)}
+.pod-header{background:var(--card);padding:7px 12px;display:flex;align-items:center;gap:8px;cursor:move;border-bottom:1px solid var(--border);flex-shrink:0}
+.pod-title{font-size:.8rem;font-weight:600;flex:1;display:flex;align-items:center;gap:6px}
+.pod-actions{display:flex;gap:4px}
+.pod-btn{width:22px;height:22px;border-radius:5px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center}
+.pod-btn:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.pod-body{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.pod-resize{position:absolute;bottom:0;left:0;width:16px;height:16px;cursor:nwse-resize;z-index:5}
+.pod-resize::before{content:'';position:absolute;bottom:3px;left:3px;width:8px;height:8px;border-left:2px solid var(--border);border-bottom:2px solid var(--border)}
+
+/* ═══ VIDEO POD ═══ */
+.video-grid{flex:1;display:grid;gap:6px;padding:6px;overflow-y:auto;align-content:start;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.video-tile{background:#000;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:4/3;border:2px solid transparent}
+.video-tile.speaking{border-color:var(--green)}
+.video-tile video{width:100%;height:100%;object-fit:cover}
+.video-tile .no-video{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a2332,#0d1117)}
+.video-avatar{width:44px;height:44px;border-radius:50%;background:rgba(52,152,219,.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.1rem}
+.video-label{position:absolute;bottom:4px;right:6px;left:6px;display:flex;align-items:center;gap:4px;font-size:.68rem;background:rgba(0,0,0,.55);padding:2px 6px;border-radius:5px}
+.host-crown{position:absolute;top:4px;right:4px;font-size:.8rem}
+
+/* ═══ WHITEBOARD POD ═══ */
+.wb-toolbar{padding:6px 8px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:5px;flex-wrap:wrap;flex-shrink:0}
+.tool-btn{padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.75rem;transition:all .15s;white-space:nowrap}
+.tool-btn:hover,.tool-btn.active{border-color:var(--blue);background:rgba(52,152,219,.1);color:var(--blue)}
+.color-dot{width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.color-dot.active{border-color:#fff}
+.size-slider{accent-color:var(--blue);width:60px}
+.sep{width:1px;height:20px;background:var(--border);margin:0 2px}
+.canvas-wrap{flex:1;overflow:hidden;position:relative;background:#1a2030}
+.canvas-wrap canvas{width:100%;height:100%;cursor:crosshair}
+.layer-tabs{display:flex;gap:3px;padding:4px 8px;background:var(--card);border-top:1px solid var(--border);flex-shrink:0}
+.layer-tab{padding:3px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.72rem;cursor:pointer}
+.layer-tab.active{border-color:var(--green);color:var(--green)}
+
+/* ═══ SCREEN SHARE POD ═══ */
+.screen-share-area{flex:1;background:#000;display:flex;align-items:center;justify-content:center;position:relative}
+.screen-share-area video{width:100%;height:100%;object-fit:contain}
+.screen-empty{color:var(--muted);text-align:center;font-size:.85rem}
+
+/* ═══ CHAT POD ═══ */
+.chat-msgs{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
+.cmsg{display:flex;gap:6px;animation:fadeIn .2s ease;max-width:90%}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.cmsg.mine{align-self:flex-end;flex-direction:row-reverse}
+.cmsg-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:bold;flex-shrink:0;align-self:flex-end}
+.av-teacher{background:rgba(233,69,96,.2);color:var(--pri)}
+.av-student{background:rgba(52,152,219,.2);color:var(--blue)}
+.av-mine{background:rgba(46,204,113,.2);color:var(--green)}
+.cbubble{padding:6px 10px;border-radius:9px;font-size:.78rem;line-height:1.45;word-break:break-word}
+.cbubble-other{background:var(--card);border:1px solid var(--border);border-radius:9px 9px 9px 2px}
+.cbubble-mine{background:rgba(52,152,219,.15);border:1px solid rgba(52,152,219,.25);border-radius:9px 9px 2px 9px}
+.cmsg-name{font-size:.63rem;color:var(--muted);margin-bottom:1px}
+.chat-input{padding:7px 8px;border-top:1px solid var(--border);display:flex;gap:6px;flex-shrink:0}
+.chat-input input{flex:1;background:var(--inp);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:6px 9px;font-family:inherit;font-size:.78rem;direction:rtl}
+.chat-input input:focus{outline:none;border-color:var(--blue)}
+.chat-input button{background:var(--blue);border:none;border-radius:7px;color:#fff;padding:6px 10px;cursor:pointer;font-size:.8rem}
+
+/* ═══ PARTICIPANTS POD ═══ */
+.participants-list{flex:1;overflow-y:auto;padding:8px}
+.pt-item{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:8px;margin-bottom:5px;background:var(--bg);border:1px solid var(--border)}
+.pt-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.7rem;flex-shrink:0}
+.pt-info{flex:1;min-width:0}
+.pt-name{font-size:.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt-role{font-size:.65rem;color:var(--muted)}
+.pt-mute-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.85rem}
+.pt-mute-btn:hover{color:var(--pri)}
+.online-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ═══ FILES POD ═══ */
+.files-panel{flex:1;overflow-y:auto;padding:8px}
+.file-share-btn{width:100%;padding:8px;border:2px dashed var(--border);border-radius:8px;background:transparent;color:var(--muted);font-family:inherit;font-size:.78rem;cursor:pointer;margin-bottom:8px;transition:all .2s}
+.file-share-btn:hover{border-color:var(--blue);color:var(--blue)}
+.shared-file{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--bg);border:1px solid var(--border);border-radius:7px;margin-bottom:6px;font-size:.76rem}
+.shared-file a{color:var(--blue);text-decoration:none}.shared-file a:hover{text-decoration:underline}
+
+/* ═══ POD LAUNCHER ═══ */
+.pod-launcher{background:var(--panel);border-top:1px solid var(--border);padding:6px 12px;display:flex;gap:8px;align-items:center;flex-shrink:0;overflow-x:auto}
+.launcher-btn{padding:6px 12px;border-radius:7px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-family:inherit;font-size:.78rem;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;transition:all .15s}
+.launcher-btn:hover{border-color:var(--blue);color:var(--blue)}
+.launcher-btn.active{border-color:var(--green);color:var(--green)}
+
+/* ═══ RAISED HANDS BAR ═══ */
+.hands-bar{position:absolute;top:8px;left:8px;background:rgba(241,196,15,.1);border:1px solid var(--yellow);border-radius:10px;padding:6px 10px;display:none;flex-wrap:wrap;gap:6px;z-index:50;max-width:300px}
+.hand-chip{background:rgba(241,196,15,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:20px;padding:2px 9px;font-size:.72rem;display:flex;align-items:center;gap:4px}
+.hand-chip button{background:transparent;border:none;color:var(--yellow);cursor:pointer;font-size:.7rem}
+
+/* ═══ MODALS ═══ */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;display:none;align-items:center;justify-content:center}
+.mo.open{display:flex}
+.md{background:var(--card);border:1px solid var(--border);border-radius:14px;width:90%;max-width:520px;max-height:85vh;overflow-y:auto;padding:22px}
+.mdh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.mdh h2{font-size:1rem}
+.mc{background:transparent;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer}.mc:hover{color:var(--pri)}
+.fg{margin-bottom:12px}
+label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px}
+input[type=text],select{width:100%;background:var(--inp);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.88rem;padding:8px 11px;font-family:inherit;direction:rtl}
+input:focus,select:focus{outline:none;border-color:var(--blue)}
+.btn{padding:9px 16px;border-radius:8px;border:none;font-family:inherit;font-size:.85rem;cursor:pointer;font-weight:600}
+.btn-p{background:var(--blue);color:#fff}
+.btn-o{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-full{width:100%}
+.group-editor{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.group-box{border:1px solid var(--border);border-radius:8px;padding:10px}
+.group-box input{margin-bottom:8px}
+.student-check{display:flex;align-items:center;gap:7px;font-size:.82rem;padding:3px 0}
+.poll-live-opt{display:flex;align-items:center;gap:8px;padding:8px 10px;border:2px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer}
+.poll-live-opt:hover{border-color:var(--blue)}
+.poll-live-opt.voted{border-color:var(--green);background:rgba(46,204,113,.06)}
+.poll-bar-bg{height:6px;border-radius:3px;background:rgba(255,255,255,.08);flex:1}
+.poll-bar-fill{height:100%;border-radius:3px;background:var(--green);transition:width .3s}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="live-badge"><span class="live-dot"></span>زنده</div>
+  <div><div class="session-title" id="sessionTitle">کلاس مجازی</div><div class="session-meta" id="sessionMeta"></div></div>
+  <div class="topbar-center">
+    <button class="media-btn" id="micBtn" onclick="toggleMic()" title="میکروفون">🎤</button>
+    <button class="media-btn" id="camBtn" onclick="toggleCam()" title="دوربین">📷</button>
+    <button class="media-btn" id="screenBtn" onclick="toggleScreenShare()" title="اشتراک صفحه">🖥️</button>
+    <button class="media-btn" id="handBtn" onclick="raiseHand()" title="دست بلند">✋</button>
+    <button class="media-btn" id="recBtn" onclick="toggleRecording()" title="ضبط جلسه">⏺️</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="tbtn tbtn-purple" id="breakoutBtn" onclick="openBreakoutModal()" style="display:none">👥 اتاق‌های گروهی</button>
+    <button class="tbtn tbtn-yellow" onclick="openLivePollModal()" id="pollBtnTeacher" style="display:none">📊 نظرسنجی زنده</button>
+    <button class="tbtn tbtn-red" onclick="endSessionBtn()" id="endSessBtn" style="display:none">🔴 پایان کلاس</button>
+    <button class="tbtn tbtn-outline" onclick="goBack()">← خروج</button>
+  </div>
+</div>
+
+<div class="workspace" id="workspace">
+  <div class="hands-bar" id="handsBar"></div>
+</div>
+
+<div class="pod-launcher">
+  <button class="launcher-btn active" id="launch-video" onclick="togglePod('video')">🎥 ویدیو</button>
+  <button class="launcher-btn active" id="launch-whiteboard" onclick="togglePod('whiteboard')">✏️ تخته</button>
+  <button class="launcher-btn" id="launch-screen" onclick="togglePod('screen')">🖥️ اشتراک صفحه</button>
+  <button class="launcher-btn active" id="launch-chat" onclick="togglePod('chat')">💬 چت</button>
+  <button class="launcher-btn active" id="launch-participants" onclick="togglePod('participants')">👥 حاضرین</button>
+  <button class="launcher-btn" id="launch-files" onclick="togglePod('files')">📎 فایل</button>
+</div>
+
+<div class="mo" id="moBreakout">
+  <div class="md">
+    <div class="mdh"><h2>👥 اتاق‌های گروهی</h2><button class="mc" onclick="closeMo('moBreakout')">✕</button></div>
+    <div class="fg"><label>تعداد گروه</label>
+      <select id="groupCount" onchange="regenerateGroups()">
+        <option value="2">۲ گروه</option><option value="3">۳ گروه</option><option value="4">۴ گروه</option><option value="5">۵ گروه</option>
+      </select>
+    </div>
+    <div id="groupEditor" class="group-editor"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-o" onclick="closeMo('moBreakout')">انصراف</button>
+      <button class="btn btn-p btn-full" onclick="startBreakout()">🚀 شروع اتاق‌های گروهی</button>
+    </div>
+    <button class="btn btn-o btn-full" style="margin-top:8px;display:none" id="endBreakoutBtn" onclick="endBreakout()">⏹️ پایان اتاق‌های گروهی</button>
+  </div>
+</div>
+
+<div class="mo" id="moLivePoll">
+  <div class="md">
+    <div class="mdh"><h2>📊 نظرسنجی زنده</h2><button class="mc" onclick="closeMo('moLivePoll')">✕</button></div>
+    <div class="fg"><label>سوال</label><input type="text" id="lpQuestion" placeholder="سوال نظرسنجی..."/></div>
+    <div class="fg"><label>گزینه‌ها (هر خط یک گزینه)</label><textarea id="lpOptions" style="width:100%;min-height:90px;background:var(--inp);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px;font-family:inherit;font-size:.85rem;direction:rtl" placeholder="بله&#10;خیر&#10;نمی‌دانم"></textarea></div>
+    <button class="btn btn-p btn-full" onclick="startLivePoll()">🚀 شروع نظرسنجی</button>
+  </div>
+</div>
+
+<div class="mo" id="moPollView">
+  <div class="md">
+    <div class="mdh"><h2 id="pollViewTitle">نظرسنجی</h2><button class="mc" onclick="closeMo('moPollView')">✕</button></div>
+    <div id="pollViewBody"></div>
+    <button class="btn btn-full" style="margin-top:12px;display:none;background:var(--pri);color:#fff" id="endPollBtn" onclick="endLivePoll()">⏹️ پایان نظرسنجی</button>
+  </div>
+</div>
+
+<script>
+const token=localStorage.getItem('token');
+const user=JSON.parse(localStorage.getItem('user')||'null');
+if(!token||!user){location.href='/';throw 0;}
+const sessionId=new URLSearchParams(location.search).get('id');
+if(!sessionId){location.href='/';throw 0;}
+
+let session=null,ws=null,isTeacher=false;
+let podStates={};
+let zTop=10;
+
+async function api(m,p,b){
+  const r=await fetch(p,{method:m,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:b?JSON.stringify(b):undefined});
+  if(r.status===401){localStorage.clear();location.href='/';return null;}
+  return r.json();
+}
+
+async function init(){
+  session=await api('GET',`/api/sessions/${sessionId}`);
+  if(!session||session.error){alert(session?.error||'جلسه یافت نشد');goBack();return;}
+  isTeacher=session.teacherId===user.id;
+  document.getElementById('sessionTitle').textContent=session.title||'کلاس مجازی';
+  document.getElementById('sessionMeta').textContent=`معلم: ${session.teacherName} · ${(session.students||[]).length+1} نفر`;
+  if(isTeacher){
+    document.getElementById('breakoutBtn').style.display='';
+    document.getElementById('pollBtnTeacher').style.display='';
+    document.getElementById('endSessBtn').style.display='';
+  }
+  setupPods();
+  connectWS();
+  classMsgs=session.messages||[];
+  renderClassMsgs();
+  renderSharedFiles();
+}
+
+const podDefs={
+  video:{title:'🎥 پارتیسیپنت‌ها (ویدیو)',w:340,h:280,x:20,y:20},
+  whiteboard:{title:'✏️ تخته هوشمند',w:560,h:400,x:370,y:20},
+  screen:{title:'🖥️ اشتراک صفحه',w:560,h:360,x:370,y:20},
+  chat:{title:'💬 چت کلاس',w:280,h:340,x:940,y:20},
+  participants:{title:'👥 حاضرین',w:280,h:300,x:940,y:20},
+  files:{title:'📎 فایل‌های اشتراکی',w:280,h:300,x:940,y:20}
+};
+const defaultOpen=new Set(['video','whiteboard','chat','participants']);
+
+function setupPods(){
+  const ws2=document.getElementById('workspace');
+  Object.keys(podDefs).forEach((key,i)=>{
+    const def=podDefs[key];
+    podStates[key]={open:defaultOpen.has(key),x:def.x+((i%3)*10),y:def.y+((i%3)*10),w:def.w,h:def.h,z:++zTop};
+    const pod=document.createElement('div');
+    pod.className='pod';pod.id='pod-'+key;
+    pod.innerHTML=`
+      <div class="pod-header" onmousedown="startDrag(event,'${key}')">
+        <div class="pod-title">${def.title}</div>
+        <div class="pod-actions"><button class="pod-btn" onclick="closePod('${key}')">✕</button></div>
+      </div>
+      <div class="pod-body" id="podbody-${key}"></div>
+      <div class="pod-resize" onmousedown="startResize(event,'${key}')"></div>`;
+    ws2.appendChild(pod);
+    buildPodContent(key);
+    applyPodStyle(key);
+    if(!podStates[key].open)pod.style.display='none';
+  });
+}
+
+function applyPodStyle(key){
+  const s=podStates[key];const el=document.getElementById('pod-'+key);
+  el.style.left=s.x+'px';el.style.top=s.y+'px';el.style.width=s.w+'px';el.style.height=s.h+'px';el.style.zIndex=s.z;
+}
+
+function focusPod(key){
+  document.querySelectorAll('.pod').forEach(p=>p.classList.remove('focused'));
+  podStates[key].z=++zTop;
+  document.getElementById('pod-'+key).classList.add('focused');
+  document.getElementById('pod-'+key).style.zIndex=zTop;
+}
+
+function togglePod(key){
+  podStates[key].open=!podStates[key].open;
+  const el=document.getElementById('pod-'+key);
+  el.style.display=podStates[key].open?'flex':'none';
+  document.getElementById('launch-'+key).classList.toggle('active',podStates[key].open);
+  if(podStates[key].open)focusPod(key);
+}
+function closePod(key){
+  podStates[key].open=false;
+  document.getElementById('pod-'+key).style.display='none';
+  document.getElementById('launch-'+key).classList.remove('active');
+}
+
+let dragState=null;
+function startDrag(e,key){
+  if(e.target.closest('.pod-btn'))return;
+  focusPod(key);
+  const el=document.getElementById('pod-'+key);
+  dragState={key,startX:e.clientX,startY:e.clientY,origX:el.offsetLeft,origY:el.offsetTop};
+  document.addEventListener('mousemove',onDrag);
+  document.addEventListener('mouseup',stopDrag);
+}
+function onDrag(e){
+  if(!dragState)return;
+  const dx=e.clientX-dragState.startX,dy=e.clientY-dragState.startY;
+  const s=podStates[dragState.key];
+  s.x=Math.max(0,dragState.origX+dx);s.y=Math.max(0,dragState.origY+dy);
+  applyPodStyle(dragState.key);
+}
+function stopDrag(){dragState=null;document.removeEventListener('mousemove',onDrag);document.removeEventListener('mouseup',stopDrag);}
+
+let resizeState=null;
+function startResize(e,key){
+  e.stopPropagation();
+  focusPod(key);
+  const s=podStates[key];
+  resizeState={key,startX:e.clientX,startY:e.clientY,origW:s.w,origH:s.h};
+  document.addEventListener('mousemove',onResize);
+  document.addEventListener('mouseup',stopResize);
+}
+function onResize(e){
+  if(!resizeState)return;
+  const dx=e.clientX-resizeState.startX,dy=e.clientY-resizeState.startY;
+  const s=podStates[resizeState.key];
+  s.w=Math.max(220,resizeState.origW+dx);s.h=Math.max(160,resizeState.origH+dy);
+  applyPodStyle(resizeState.key);
+  if(resizeState.key==='whiteboard')resizeCanvas();
+}
+function stopResize(){resizeState=null;document.removeEventListener('mousemove',onResize);document.removeEventListener('mouseup',stopResize);}
+
+function buildPodContent(key){
+  const body=document.getElementById('podbody-'+key);
+  if(key==='video')body.innerHTML=`<div class="video-grid" id="videoGrid"></div>`;
+  if(key==='whiteboard')body.innerHTML=`
+    <div class="wb-toolbar">
+      <button class="tool-btn active" id="tool-pen" onclick="setTool('pen')">✏️</button>
+      <button class="tool-btn" id="tool-line" onclick="setTool('line')">📏</button>
+      <button class="tool-btn" id="tool-rect" onclick="setTool('rect')">⬜</button>
+      <button class="tool-btn" id="tool-circle" onclick="setTool('circle')">⭕</button>
+      <button class="tool-btn" id="tool-text" onclick="setTool('text')">T</button>
+      <button class="tool-btn" id="tool-eraser" onclick="setTool('eraser')">🧹</button>
+      <div class="sep"></div>
+      <input type="range" class="size-slider" id="sizeSlider" min="1" max="30" value="3" oninput="brushSize=+this.value">
+      <div class="sep"></div>
+      <div class="color-dot active" style="background:#e6edf3" onclick="setColor('#e6edf3',this)"></div>
+      <div class="color-dot" style="background:#e94560" onclick="setColor('#e94560',this)"></div>
+      <div class="color-dot" style="background:#3498db" onclick="setColor('#3498db',this)"></div>
+      <div class="color-dot" style="background:#2ecc71" onclick="setColor('#2ecc71',this)"></div>
+      <div class="color-dot" style="background:#f1c40f" onclick="setColor('#f1c40f',this)"></div>
+      <div class="sep"></div>
+      <button class="tool-btn" onclick="undoWB()">↩️ Undo</button>
+      <button class="tool-btn" onclick="clearCanvas()">🗑️</button>
+      <button class="tool-btn" onclick="saveCanvas()">💾</button>
+    </div>
+    <div class="canvas-wrap"><canvas id="wb"></canvas></div>
+    <div class="layer-tabs">
+      <button class="layer-tab active" data-l="0" onclick="switchLayer(0)">صفحه ۱</button>
+      <button class="layer-tab" data-l="1" onclick="switchLayer(1)">صفحه ۲</button>
+      <button class="layer-tab" data-l="2" onclick="switchLayer(2)">صفحه ۳</button>
+      <button class="layer-tab" style="margin-right:auto" onclick="addLayer()">+ صفحه جدید</button>
+    </div>`;
+  if(key==='screen')body.innerHTML=`<div class="screen-share-area" id="screenArea"><div class="screen-empty">اشتراک صفحه فعال نیست<br><span style="font-size:.75rem">از دکمه 🖥️ در نوار بالا استفاده کنید</span></div></div>`;
+  if(key==='chat')body.innerHTML=`
+    <div class="chat-msgs" id="classMsgs"></div>
+    <div class="chat-input">
+      <input type="text" id="classInput" placeholder="پیام..." onkeydown="if(event.key==='Enter')sendClassMsg()"/>
+      <button onclick="sendClassMsg()">➤</button>
+    </div>`;
+  if(key==='participants')body.innerHTML=`<div class="participants-list" id="participantsList"></div>`;
+  if(key==='files')body.innerHTML=`
+    <div class="files-panel">
+      <label class="file-share-btn">📎 اشتراک‌گذاری فایل<input type="file" style="display:none" onchange="shareFile(this)"/></label>
+      <div id="sharedFiles"></div>
+    </div>`;
+  document.getElementById('pod-'+key).addEventListener('mousedown',()=>focusPod(key));
+  if(key==='whiteboard')setTimeout(resizeCanvas,50);
+}
+
+function connectWS(){
+  const proto=location.protocol==='https:'?'wss':'ws';
+  ws=new WebSocket(`${proto}://${location.host}?token=${token}`);
+  ws.onopen=()=>{wsSend({type:'join_session',classId:sessionId});};
+  ws.onmessage=e=>{handleWS(JSON.parse(e.data));};
+  ws.onclose=()=>setTimeout(connectWS,3000);
+}
+function wsSend(data){if(ws&&ws.readyState===1)ws.send(JSON.stringify(data));}
+
+function handleWS(data){
+  if(data.type==='class_message'){
+    if(!classMsgs.find(x=>x.id===data.message.id)){
+      const li=classMsgs.findIndex(x=>x.id.toString().startsWith('local_')&&x.text===data.message.text&&x.senderId===data.message.senderId);
+      if(li!==-1)classMsgs[li]=data.message;else classMsgs.push(data.message);
+      renderClassMsgs();
+    }
+  }
+  if(data.type==='class_raise_hand'){
+    if(data.action==='down')raisedHands.delete(data.userId);else raisedHands.set(data.userId,data.userName);
+    renderHands();
+  }
+  if(data.type==='whiteboard'){
+    if(data.action==='draw')drawFromRemote(data);
+    if(data.action==='clear')clearLayerCanvas();
+    if(data.action==='undo')undoLocal();
+  }
+  if(data.type==='presence_join'){addParticipant(data.userId,data.userName,data.userRole);renderParticipants();}
+  if(data.type==='presence_leave'){onlineUsers.delete(data.userId);renderParticipants();removeVideoTile(data.userId);}
+  if(data.type==='presence_list'){
+    (data.online||[]).forEach(u=>addParticipant(u.userId,u.userName,u.userRole));
+    renderParticipants();
+    if(localStream)(data.online||[]).forEach(u=>createPeerConnection(u.userId,true));
+  }
+  if(data.type==='webrtc_signal')handleSignal(data);
+  if(data.type==='force_mute'){
+    if(data.kind==='mic'&&micOn)toggleMic();
+    if(data.kind==='cam'&&camOn)toggleCam();
+  }
+  if(data.type==='breakout_started')showBreakoutAssignment(data.groups);
+  if(data.type==='breakout_ended')hideBreakoutAssignment();
+  if(data.type==='live_poll_start')showLivePollForStudent(data.poll);
+  if(data.type==='live_poll_update')updatePollResults(data.counts);
+  if(data.type==='live_poll_end')endPollUI();
+  if(data.type==='session_ended'){alert('جلسه توسط معلم پایان یافت');goBack();}
+}
+
+let localStream=null,micOn=false,camOn=false,screenStream=null;
+const peers=new Map();
+const onlineUsers=new Map();
+const RTC_CONFIG={iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
+
+async function toggleMic(){
+  if(!localStream)await ensureLocalStream();
+  micOn=!micOn;
+  localStream?.getAudioTracks().forEach(t=>t.enabled=micOn);
+  document.getElementById('micBtn').classList.toggle('on',micOn);
+  document.getElementById('micBtn').classList.toggle('off-red',!micOn);
+  wsSend({type:'media_state',classId:sessionId,mic:micOn,cam:camOn});
+  refreshMyTile();
+}
+async function toggleCam(){
+  if(!localStream)await ensureLocalStream();
+  camOn=!camOn;
+  localStream?.getVideoTracks().forEach(t=>t.enabled=camOn);
+  document.getElementById('camBtn').classList.toggle('on',camOn);
+  wsSend({type:'media_state',classId:sessionId,mic:micOn,cam:camOn});
+  refreshMyTile();
+}
+async function ensureLocalStream(){
+  try{
+    localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:true});
+    localStream.getAudioTracks().forEach(t=>t.enabled=false);
+    localStream.getVideoTracks().forEach(t=>t.enabled=false);
+    addOrUpdateVideoTile(user.id,user.name,localStream,true);
+    peers.forEach(pc=>localStream.getTracks().forEach(t=>{try{pc.addTrack(t,localStream);}catch{}}));
+  }catch(err){
+    alert('دسترسی به میکروفون/دوربین داده نشد: '+err.message);
+  }
+}
+
+function createPeerConnection(remoteId,initiator){
+  if(peers.has(remoteId))return peers.get(remoteId);
+  const pc=new RTCPeerConnection(RTC_CONFIG);
+  peers.set(remoteId,pc);
+  if(localStream)localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));
+  if(screenStream)screenStream.getTracks().forEach(t=>pc.addTrack(t,screenStream));
+  pc.onicecandidate=e=>{if(e.candidate)wsSend({type:'webrtc_signal',classId:sessionId,targetId:remoteId,signal:{candidate:e.candidate}});};
+  pc.ontrack=e=>{
+    const remoteUser=onlineUsers.get(remoteId);
+    addOrUpdateVideoTile(remoteId,remoteUser?.name||'کاربر',e.streams[0],false);
+  };
+  if(initiator){
+    pc.onnegotiationneeded=async()=>{
+      try{
+        const offer=await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        wsSend({type:'webrtc_signal',classId:sessionId,targetId:remoteId,signal:{sdp:pc.localDescription}});
+      }catch{}
+    };
+  }
+  return pc;
+}
+
+async function handleSignal(data){
+  const pc=createPeerConnection(data.fromId,false);
+  const signal=data.signal;
+  try{
+    if(signal.sdp){
+      await pc.setRemoteDescription(new RTCSessionDescription(signal.sdp));
+      if(signal.sdp.type==='offer'){
+        const answer=await pc.createAnswer();
+        await pc.setLocalDescription(answer);
+        wsSend({type:'webrtc_signal',classId:sessionId,targetId:data.fromId,signal:{sdp:pc.localDescription}});
+      }
+    } else if(signal.candidate){
+      await pc.addIceCandidate(new RTCIceCandidate(signal.candidate));
+    }
+  }catch(e){console.error('WebRTC signal error',e);}
+}
+
+function addParticipant(id,name,role){onlineUsers.set(id,{name,role});}
+function addOrUpdateVideoTile(id,name,stream,isMine){
+  const grid=document.getElementById('videoGrid');
+  if(!grid)return;
+  let tile=document.getElementById('vtile-'+id);
+  if(!tile){tile=document.createElement('div');tile.className='video-tile';tile.id='vtile-'+id;grid.appendChild(tile);}
+  const hasVideo=stream&&stream.getVideoTracks().some(t=>t.enabled);
+  tile.innerHTML=hasVideo?`<video autoplay playsinline ${isMine?'muted':''}></video>`:`<div class="no-video"><div class="video-avatar">${name[0]}</div></div>`;
+  if(hasVideo){const v=tile.querySelector('video');v.srcObject=stream;}
+  tile.innerHTML+=`<div class="video-label"><span>${name}${isMine?' (شما)':''}</span></div>`;
+  if(onlineUsers.get(id)?.role==='teacher'||(isMine&&isTeacher))tile.innerHTML+='<span class="host-crown">👑</span>';
+}
+function refreshMyTile(){if(localStream)addOrUpdateVideoTile(user.id,user.name,localStream,true);}
+function removeVideoTile(id){const t=document.getElementById('vtile-'+id);if(t)t.remove();const pc=peers.get(id);if(pc){pc.close();peers.delete(id);}}
+
+let sharingScreen=false;
+async function toggleScreenShare(){
+  if(sharingScreen){
+    screenStream?.getTracks().forEach(t=>t.stop());
+    screenStream=null;sharingScreen=false;
+    document.getElementById('screenBtn').classList.remove('on');
+    document.getElementById('screenArea').innerHTML='<div class="screen-empty">اشتراک صفحه فعال نیست</div>';
+    wsSend({type:'media_state',classId:sessionId,mic:micOn,cam:camOn,screen:false});
+    return;
+  }
+  try{
+    screenStream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false});
+    sharingScreen=true;
+    document.getElementById('screenBtn').classList.add('on');
+    if(!podStates.screen.open)togglePod('screen');
+    const area=document.getElementById('screenArea');
+    area.innerHTML='<video autoplay playsinline muted></video>';
+    area.querySelector('video').srcObject=screenStream;
+    peers.forEach(pc=>screenStream.getTracks().forEach(t=>pc.addTrack(t,screenStream)));
+    screenStream.getVideoTracks()[0].onended=()=>toggleScreenShare();
+    wsSend({type:'media_state',classId:sessionId,mic:micOn,cam:camOn,screen:true});
+  }catch(err){}
+}
+
+let mediaRecorder=null,recordedChunks=[],isRecording=false;
+async function toggleRecording(){
+  if(isRecording){mediaRecorder.stop();return;}
+  try{
+    const displayStream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true});
+    recordedChunks=[];
+    mediaRecorder=new MediaRecorder(displayStream,{mimeType:'video/webm'});
+    mediaRecorder.ondataavailable=e=>{if(e.data.size>0)recordedChunks.push(e.data);};
+    mediaRecorder.onstop=async()=>{
+      isRecording=false;
+      document.getElementById('recBtn').classList.remove('rec');
+      displayStream.getTracks().forEach(t=>t.stop());
+      const blob=new Blob(recordedChunks,{type:'video/webm'});
+      const reader=new FileReader();
+      reader.onload=async()=>{
+        if(isTeacher){
+          const uploaded=await api('POST',`/api/sessions/${sessionId}/recording`,{name:`ضبط-${new Date().toLocaleDateString('fa-IR')}.webm`,data:reader.result});
+          if(uploaded?.url)alert('✅ ضبط جلسه ذخیره شد و در فایل‌های اشتراکی موجود است');
+        }
+      };
+      reader.readAsDataURL(blob);
+    };
+    mediaRecorder.start();
+    isRecording=true;
+    document.getElementById('recBtn').classList.add('rec');
+  }catch(err){alert('ضبط لغو شد یا دسترسی داده نشد');}
+}
+
+let tool='pen',brushColor='#e6edf3',brushSize=3,drawing=false,lastX=0,lastY=0,startX=0,startY=0,snapshot=null;
+let currentLayer=0,layers=[[],[],[]];
+const canvas=()=>document.getElementById('wb');
+const ctx=()=>canvas().getContext('2d');
+
+function resizeCanvas(){
+  const c=canvas();if(!c)return;
+  const wrap=c.parentElement;
+  c.width=wrap.clientWidth;c.height=wrap.clientHeight;
+  ctx().fillStyle='#1a2030';ctx().fillRect(0,0,c.width,c.height);
+  redrawLayer();
+}
+window.addEventListener('resize',()=>{if(podStates.whiteboard?.open)resizeCanvas();});
+
+function setTool(t){tool=t;document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));const el=document.getElementById('tool-'+t);if(el)el.classList.add('active');}
+function setColor(c,el){brushColor=c;document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('active'));el.classList.add('active');}
+
+function attachCanvasEvents(){
+  const c=canvas();if(!c||c._bound)return;c._bound=true;
+  c.addEventListener('mousedown',e=>{
+    drawing=true;const {x,y}=pos(e);lastX=startX=x;lastY=startY=y;
+    if(tool!=='pen'&&tool!=='eraser')snapshot=ctx().getImageData(0,0,c.width,c.height);
+    if(tool==='pen'||tool==='eraser'){ctx().beginPath();ctx().moveTo(x,y);}
+  });
+  c.addEventListener('mousemove',e=>{
+    if(!drawing)return;const {x,y}=pos(e);
+    if(tool==='pen'||tool==='eraser'){
+      ctx().globalCompositeOperation=tool==='eraser'?'destination-out':'source-over';
+      ctx().strokeStyle=brushColor;ctx().lineWidth=brushSize;ctx().lineCap='round';
+      ctx().lineTo(x,y);ctx().stroke();
+      const op={tool,x1:lastX,y1:lastY,x2:x,y2:y,color:brushColor,size:brushSize,layer:currentLayer};
+      layers[currentLayer].push(op);
+      wsSend({type:'whiteboard',classId:sessionId,action:'draw',...op});
+      lastX=x;lastY=y;
+    } else {
+      ctx().putImageData(snapshot,0,0);drawShape(tool,startX,startY,x,y);
+    }
+  });
+  c.addEventListener('mouseup',e=>{
+    if(!drawing)return;drawing=false;const {x,y}=pos(e);
+    if(tool==='text'){
+      const t=prompt('متن:');
+      if(t){
+        ctx().font=`${brushSize*6+12}px Tahoma`;ctx().fillStyle=brushColor;ctx().fillText(t,startX,startY);
+        const op={tool:'text',x1:startX,y1:startY,text:t,color:brushColor,size:brushSize,layer:currentLayer};
+        layers[currentLayer].push(op);
+        wsSend({type:'whiteboard',classId:sessionId,action:'draw',...op});
+      }
+    } else if(tool!=='pen'&&tool!=='eraser'){
+      const op={tool,x1:startX,y1:startY,x2:x,y2:y,color:brushColor,size:brushSize,layer:currentLayer};
+      layers[currentLayer].push(op);
+      wsSend({type:'whiteboard',classId:sessionId,action:'draw',...op});
+    }
+    saveWB();
+  });
+  c.addEventListener('mouseleave',()=>drawing=false);
+  c.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];c.dispatchEvent(new MouseEvent('mousedown',{clientX:t.clientX,clientY:t.clientY}));},{passive:false});
+  c.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];c.dispatchEvent(new MouseEvent('mousemove',{clientX:t.clientX,clientY:t.clientY}));},{passive:false});
+  c.addEventListener('touchend',e=>{e.preventDefault();c.dispatchEvent(new MouseEvent('mouseup',{}));},{passive:false});
+}
+function pos(e){const c=canvas();const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*(c.width/r.width),y:(e.clientY-r.top)*(c.height/r.height)};}
+function drawShape(t,x1,y1,x2,y2){
+  const cx=ctx();cx.globalCompositeOperation='source-over';cx.strokeStyle=brushColor;cx.lineWidth=brushSize;cx.lineCap='round';cx.beginPath();
+  if(t==='line'){cx.moveTo(x1,y1);cx.lineTo(x2,y2);cx.stroke();}
+  else if(t==='rect'){cx.strokeRect(x1,y1,x2-x1,y2-y1);}
+  else if(t==='circle'){cx.ellipse((x1+x2)/2,(y1+y2)/2,Math.abs(x2-x1)/2,Math.abs(y2-y1)/2,0,0,2*Math.PI);cx.stroke();}
+}
+function drawFromRemote(op){
+  if(op.layer!==currentLayer)return;
+  const cx=ctx();
+  if(op.tool==='text'){cx.font=`${op.size*6+12}px Tahoma`;cx.fillStyle=op.color;cx.fillText(op.text,op.x1,op.y1);return;}
+  cx.globalCompositeOperation=op.tool==='eraser'?'destination-out':'source-over';
+  cx.strokeStyle=op.color;cx.lineWidth=op.size;cx.lineCap='round';
+  if(op.tool==='pen'||op.tool==='eraser'){cx.beginPath();cx.moveTo(op.x1,op.y1);cx.lineTo(op.x2,op.y2);cx.stroke();}
+  else drawShape(op.tool,op.x1,op.y1,op.x2,op.y2);
+}
+function redrawLayer(){
+  const c=canvas();if(!c)return;
+  ctx().fillStyle='#1a2030';ctx().fillRect(0,0,c.width,c.height);
+  layers[currentLayer].forEach(op=>drawFromRemote({...op,layer:currentLayer}));
+}
+function switchLayer(i){
+  currentLayer=i;
+  document.querySelectorAll('.layer-tab').forEach(t=>t.classList.toggle('active',+t.dataset.l===i));
+  redrawLayer();
+}
+function addLayer(){
+  layers.push([]);
+  const tabs=document.querySelector('.layer-tabs');
+  const idx=layers.length-1;
+  const btn=document.createElement('button');
+  btn.className='layer-tab';btn.dataset.l=idx;btn.textContent='صفحه '+(idx+1);
+  btn.onclick=()=>switchLayer(idx);
+  tabs.insertBefore(btn,tabs.lastElementChild);
+  switchLayer(idx);
+}
+function undoWB(){
+  layers[currentLayer].pop();
+  redrawLayer();
+  wsSend({type:'whiteboard',classId:sessionId,action:'undo',layer:currentLayer});
+  saveWB();
+}
+function undoLocal(){redrawLayer();}
+function clearCanvas(){
+  if(!confirm('این صفحه پاک شود؟'))return;
+  layers[currentLayer]=[];
+  redrawLayer();
+  wsSend({type:'whiteboard',classId:sessionId,action:'clear',layer:currentLayer});
+  saveWB();
+}
+function clearLayerCanvas(){redrawLayer();}
+function saveCanvas(){const a=document.createElement('a');a.download='whiteboard.png';a.href=canvas().toDataURL();a.click();}
+async function saveWB(){await api('POST',`/api/sessions/${sessionId}/whiteboard`,{data:layers});}
+
+let classMsgs=[];
+function renderClassMsgs(){
+  const el=document.getElementById('classMsgs');if(!el)return;
+  el.innerHTML=classMsgs.map(m=>{
+    const mine=m.senderId===user.id;const isT=m.senderRole==='teacher';
+    return `<div class="cmsg ${mine?'mine':''}">
+      <div class="cmsg-av ${mine?'av-mine':isT?'av-teacher':'av-student'}">${m.senderName[0]}</div>
+      <div>${!mine?`<div class="cmsg-name">${m.senderName}</div>`:''}<div class="cbubble ${mine?'cbubble-mine':'cbubble-other'}">${escHtml(m.text)}</div></div>
+    </div>`;
+  }).join('');
+  el.scrollTop=el.scrollHeight;
+}
+function escHtml(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}
+function sendClassMsg(){
+  const input=document.getElementById('classInput');const text=input.value.trim();if(!text)return;
+  input.value='';
+  wsSend({type:'class_message',classId:sessionId,text});
+  classMsgs.push({id:'local_'+Date.now(),senderId:user.id,senderName:user.name,senderRole:user.role,text,createdAt:new Date().toISOString()});
+  renderClassMsgs();
+}
+
+function renderParticipants(){
+  const el=document.getElementById('participantsList');if(!el)return;
+  let html=`<div class="pt-item"><div class="online-dot"></div><div class="pt-av" style="background:rgba(233,69,96,.2);color:var(--pri)">${session.teacherName[0]}</div><div class="pt-info"><div class="pt-name">${session.teacherName}</div><div class="pt-role">معلم</div></div><span>👑</span></div>`;
+  onlineUsers.forEach((u,id)=>{
+    if(id===session.teacherId)return;
+    html+=`<div class="pt-item"><div class="online-dot"></div><div class="pt-av" style="background:rgba(52,152,219,.2);color:var(--blue)">${u.name[0]}</div>
+      <div class="pt-info"><div class="pt-name">${u.name}</div><div class="pt-role">دانش‌آموز</div></div>
+      ${isTeacher?`<button class="pt-mute-btn" onclick="forceMute('${id}')" title="قطع میکروفون">🔇</button>`:''}
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+function forceMute(targetId){wsSend({type:'force_mute',classId:sessionId,targetId,kind:'mic'});}
+
+const raisedHands=new Map();
+function raiseHand(){
+  const active=raisedHands.has(user.id);
+  if(active){raisedHands.delete(user.id);wsSend({type:'class_raise_hand',classId:sessionId,action:'down'});}
+  else{raisedHands.set(user.id,user.name);wsSend({type:'class_raise_hand',classId:sessionId,action:'up'});}
+  document.getElementById('handBtn').classList.toggle('on',!active);
+  renderHands();
+}
+function renderHands(){
+  const bar=document.getElementById('handsBar');
+  if(!raisedHands.size){bar.style.display='none';return;}
+  bar.style.display='flex';
+  bar.innerHTML='<span style="font-size:.72rem;color:var(--yellow)">✋</span>'+[...raisedHands.entries()].map(([id,name])=>
+    `<span class="hand-chip">${name}${isTeacher?`<button onclick="dismissHand('${id}')">✕</button>`:''}</span>`).join('');
+}
+function dismissHand(id){raisedHands.delete(id);renderHands();}
+
+let sharedFiles=[];
+async function shareFile(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const uploaded=await api('POST','/api/upload',{name:file.name,data:e.target.result,type:file.type});
+    if(!uploaded?.url)return alert('خطا در آپلود فایل');
+    sharedFiles.push({name:file.name,url:uploaded.url,by:user.name,at:new Date().toISOString()});
+    renderSharedFiles();
+    const msgText=`📎 فایل اشتراک‌گذاری شد: ${file.name}`;
+    wsSend({type:'class_message',classId:sessionId,text:msgText});
+    classMsgs.push({id:'local_'+Date.now(),senderId:user.id,senderName:user.name,senderRole:user.role,text:msgText,createdAt:new Date().toISOString()});
+    renderClassMsgs();
+  };
+  reader.readAsDataURL(file);
+}
+function renderSharedFiles(){
+  const el=document.getElementById('sharedFiles');if(!el)return;
+  if(!sharedFiles.length){el.innerHTML='<div style="text-align:center;color:var(--muted);font-size:.78rem;padding:16px">فایلی اشتراک‌گذاری نشده</div>';return;}
+  el.innerHTML=sharedFiles.map(f=>`<div class="shared-file">📎<div style="flex:1;min-width:0"><a href="${f.url}" target="_blank">${f.name}</a><div style="font-size:.68rem;color:var(--muted)">${f.by}</div></div></div>`).join('');
+}
+
+function openBreakoutModal(){document.getElementById('moBreakout').classList.add('open');regenerateGroups();}
+function regenerateGroups(){
+  const n=+document.getElementById('groupCount').value;
+  const students=[...onlineUsers.entries()].filter(([id])=>id!==session.teacherId);
+  const editor=document.getElementById('groupEditor');
+  editor.innerHTML='';
+  for(let i=0;i<n;i++){
+    const box=document.createElement('div');box.className='group-box';
+    box.innerHTML=`<input type="text" value="گروه ${i+1}" id="gname-${i}"/>
+      ${students.map(([id,u])=>`<label class="student-check"><input type="checkbox" value="${id}" ${i===0?'checked':''}> ${u.name}</label>`).join('')||'<span style="color:var(--muted);font-size:.78rem">دانش‌آموزی آنلاین نیست</span>'}`;
+    editor.appendChild(box);
+  }
+}
+function startBreakout(){
+  const n=+document.getElementById('groupCount').value;
+  const groups=[];
+  for(let i=0;i<n;i++){
+    const name=document.getElementById(`gname-${i}`).value;
+    const ids=[...document.querySelectorAll(`.group-box:nth-child(${i+1}) input[type=checkbox]:checked`)].map(c=>c.value);
+    groups.push({name,studentIds:ids});
+  }
+  wsSend({type:'breakout_assign',classId:sessionId,groups});
+  closeMo('moBreakout');
+}
+function endBreakout(){wsSend({type:'breakout_end',classId:sessionId});}
+function showBreakoutAssignment(groups){
+  const myGroup=groups.find(g=>g.studentIds.includes(user.id));
+  if(myGroup)alert(`شما در «${myGroup.name}» قرار گرفتید. با اعضای گروه در چت هماهنگ شوید.`);
+  if(isTeacher)document.getElementById('endBreakoutBtn').style.display='block';
+}
+function hideBreakoutAssignment(){
+  alert('اتاق‌های گروهی پایان یافت. به کلاس اصلی بازگردید.');
+  document.getElementById('endBreakoutBtn').style.display='none';
+}
+
+function openLivePollModal(){document.getElementById('moLivePoll').classList.add('open');}
+function startLivePoll(){
+  const q=document.getElementById('lpQuestion').value.trim();
+  const opts=document.getElementById('lpOptions').value.trim().split('\n').filter(x=>x.trim());
+  if(!q||opts.length<2)return alert('سوال و حداقل ۲ گزینه لازم است');
+  wsSend({type:'live_poll_start',classId:sessionId,question:q,options:opts});
+  closeMo('moLivePoll');
+}
+let currentLivePoll=null;
+function showLivePollForStudent(poll){
+  currentLivePoll=poll;
+  document.getElementById('pollViewTitle').textContent=poll.question;
+  document.getElementById('endPollBtn').style.display=isTeacher?'block':'none';
+  document.getElementById('pollViewBody').innerHTML=poll.options.map((o,i)=>
+    `<div class="poll-live-opt" onclick="voteLivePoll(${i})" id="lpopt-${i}"><span style="flex:1">${o}</span></div>`).join('');
+  document.getElementById('moPollView').classList.add('open');
+}
+function voteLivePoll(i){
+  document.querySelectorAll('.poll-live-opt').forEach(el=>el.classList.remove('voted'));
+  document.getElementById('lpopt-'+i).classList.add('voted');
+  wsSend({type:'live_poll_vote',classId:sessionId,option:i});
+}
+function updatePollResults(counts){
+  if(!currentLivePoll)return;
+  const total=counts.reduce((a,b)=>a+b,0)||1;
+  currentLivePoll.options.forEach((o,i)=>{
+    const pct=Math.round(counts[i]/total*100);
+    const el=document.getElementById('lpopt-'+i);
+    if(el)el.innerHTML=`<span style="flex:1">${o}</span><div class="poll-bar-bg"><div class="poll-bar-fill" style="width:${pct}%"></div></div><span style="font-size:.75rem;color:var(--muted)">${counts[i]} (${pct}%)</span>`;
+  });
+}
+function endLivePoll(){wsSend({type:'live_poll_end',classId:sessionId});}
+function endPollUI(){document.getElementById('endPollBtn').style.display='none';}
+
+async function endSessionBtn(){
+  if(!confirm('کلاس برای همه پایان یابد؟'))return;
+  await api('POST',`/api/sessions/${sessionId}/end`);
+  goBack();
+}
+
+function closeMo(id){document.getElementById(id).classList.remove('open');}
+function goBack(){
+  localStream?.getTracks().forEach(t=>t.stop());
+  screenStream?.getTracks().forEach(t=>t.stop());
+  peers.forEach(pc=>pc.close());
+  const dest={teacher:'/teacher',student:'/student',admin:'/admin'};
+  location.href=dest[user.role]||'/';
+}
+window.addEventListener('beforeunload',()=>{
+  localStream?.getTracks().forEach(t=>t.stop());
+  screenStream?.getTracks().forEach(t=>t.stop());
+});
+
+init();
+setTimeout(attachCanvasEvents,300);
+</script>
+</body>
+</html>

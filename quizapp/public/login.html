@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سامانه آموزشی — ورود</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh;display:flex;align-items:center;justify-content:center;direction:rtl}
+.wrap{width:100%;max-width:420px;padding:24px}
+.logo{text-align:center;margin-bottom:36px}
+.logo .icon{font-size:3rem;margin-bottom:12px}
+.logo h1{font-size:1.8rem;background:linear-gradient(135deg,#e94560,#9b59b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo p{color:#8b949e;margin-top:6px;font-size:.9rem}
+.card{background:#161b22;border:1px solid #30363d;border-radius:16px;padding:28px}
+.fg{margin-bottom:16px}
+label{display:block;font-size:.84rem;color:#8b949e;margin-bottom:6px}
+input{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#e6edf3;font-size:.95rem;padding:11px 13px;font-family:inherit;direction:rtl;transition:border .2s}
+input:focus{outline:none;border-color:#e94560}
+.btn{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,#e94560,#c0392b);color:#fff;font-size:1rem;font-family:inherit;font-weight:bold;cursor:pointer;transition:all .2s;margin-top:4px}
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(233,69,96,.4)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.err{background:rgba(231,76,60,.1);border:1px solid #e74c3c;color:#e74c3c;border-radius:8px;padding:10px 14px;font-size:.88rem;margin-bottom:14px;display:none}
+.hint{margin-top:18px;padding:14px;background:rgba(52,152,219,.08);border:1px solid rgba(52,152,219,.2);border-radius:10px;font-size:.82rem;color:#8b949e;text-align:center;line-height:1.6}
+.hint strong{color:#3498db}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <div class="icon">🎓</div>
+    <h1>سامانه آموزشی</h1>
+    <p>پلتفرم جامع مدیریت آموزش</p>
+  </div>
+  <div class="card">
+    <div class="err" id="err"></div>
+    <div class="fg"><label>ایمیل</label><input type="email" id="email" placeholder="example@school.ir" /></div>
+    <div class="fg"><label>رمز عبور</label><input type="password" id="pass" placeholder="رمز عبور خود را وارد کنید" /></div>
+    <button class="btn" id="btn" onclick="doLogin()">ورود به سامانه</button>
+  </div>
+  <div class="hint">
+    <strong>ادمین پیش‌فرض:</strong><br>
+    ایمیل: admin@school.ir<br>
+    رمز: admin123
+  </div>
+</div>
+<script>
+function showErr(msg){const e=document.getElementById('err');e.textContent=msg;e.style.display='block';setTimeout(()=>e.style.display='none',4000)}
+async function doLogin(){
+  const email=document.getElementById('email').value.trim();
+  const pass=document.getElementById('pass').value;
+  if(!email||!pass)return showErr('همه فیلدها را پر کنید');
+  const btn=document.getElementById('btn');btn.disabled=true;btn.textContent='⏳ در حال ورود...';
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    const d=await r.json();
+    if(!r.ok)return showErr(d.error);
+    localStorage.setItem('token',d.token);
+    localStorage.setItem('user',JSON.stringify(d.user));
+    const dest={admin:'/admin',teacher:'/teacher',student:'/student'};
+    location.href=dest[d.user.role]||'/';
+  }catch{showErr('خطا در اتصال به سرور')}
+  finally{btn.disabled=false;btn.textContent='ورود به سامانه'}
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+const u=JSON.parse(localStorage.getItem('user')||'null');
+if(u){const dest={admin:'/admin',teacher:'/teacher',student:'/student'};location.href=dest[u.role]||'/';}
+</script>
+</body>
+</html>
